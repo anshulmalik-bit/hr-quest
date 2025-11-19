@@ -1,0 +1,37 @@
+:root{
+  --bg:#0b0b0b; /* deep black */
+  --card:#111214; /* very dark gray */
+  --muted:#9aa0a6;
+  --gold:#d4af37;
+  --gold-dark:#b88f2a;
+  --accent:#b88f2a;
+  --glass: rgba(255,255,255,0.03);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:linear-gradient(180deg,var(--bg) 0%, #071016 100%);color:#fff}
+.wrap{max-width:1000px;margin:18px auto;padding:18px}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px}
+.brand h1{margin:0;font-size:22px}
+.brand .tag{color:var(--muted);margin-top:4px}
+.badge{background:linear-gradient(180deg,var(--gold) 0%, var(--gold-dark) 100%);color:#091013;padding:6px 10px;border-radius:20px;font-weight:600}
+.badge.small{font-size:12px;padding:4px 8px}
+.points{background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:10px;color:var(--muted)}
+.container{margin-top:18px}
+.card{background:var(--card);padding:18px;border-radius:12px;margin-top:16px;display:none;box-shadow:0 6px 18px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.02)}
+.card.active{display:block}
+.section-title{color:var(--gold);margin:0 0 12px 0}
+.form label{display:block;margin-top:10px;color:var(--muted)}
+input[type=text],input[type=email],textarea, input[type=file]{width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+.row{display:flex;gap:12px;align-items:center;margin-top:12px}
+.btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 14px;border-radius:10px;margin-top:12px;color:inherit;cursor:pointer}
+.btn.primary{background:linear-gradient(90deg,var(--gold) 0%, var(--gold-dark) 100%);color:#071013;border:none}
+.btn.large{padding:12px 18px;font-size:16px}
+.btn.ghost{background:transparent;border:1px dashed rgba(255,255,255,0.06)}
+.chip{background:rgba(255,255,255,0.02);padding:8px 12px;border-radius:8px;color:var(--muted)}
+.qbox{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));padding:12px;border-radius:8px}
+.scorecard{padding:12px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.02)}
+.controls{display:flex;gap:12px;margin-top:14px}
+.foot{margin-top:16px;color:var(--muted);text-align:center}
+.how{margin-top:12px;color:var(--muted)}
+.gold{color:var(--gold)}
+@media (max-width:600px){.row{flex-direction:column}}

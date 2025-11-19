@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HR Quest — Virtual HR Interview Simulator</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <h1>HR Quest</h1>
+        <p class="tag">Gamified HR Interview Simulator</p>
+      </div>
+      <div class="status">
+        <div id="levelBadge" class="badge small">Level 1</div>
+        <div id="points" class="points">Points: <span>0</span></div>
+      </div>
+    </header>
+
+    <main class="container">
+
+      <section id="home" class="card active">
+        <div class="welcome">
+          <h2>Welcome to <span class="gold">HR Quest</span></h2>
+          <p>Play through interview levels, earn points and badges — and get a clear report for your teacher.</p>
+          <div class="controls">
+            <button id="startBtn" class="btn primary large">Start the Game ▶</button>
+            <button id="howBtn" class="btn ghost">How it works</button>
+          </div>
+        </div>
+        <div class="how" id="howBox" style="display:none">
+          <ol>
+            <li>Level 1 — Upload profile & resume (ATS check)</li>
+            <li>Level 2 — Short HR interview questions (typed)</li>
+            <li>Level 3 — Results & badges</li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="profile" class="card">
+        <h3 class="section-title">Level 1 — Profile</h3>
+        <form id="profileForm" class="form">
+          <label>Name</label>
+          <input type="text" id="name" required placeholder="Your full name" />
+          <label>Email (optional)</label>
+          <input type="email" id="email" placeholder="your@college.edu" />
+          <label>Upload Resume (PDF preferred)</label>
+          <input type="file" id="resume" accept=".pdf,.txt" required />
+          <div class="row">
+            <button type="submit" class="btn primary">Upload & Analyze Resume</button>
+            <div id="atsResult" class="chip" style="display:none"></div>
+          </div>
+        </form>
+      </section>
+
+      <section id="interview" class="card">
+        <h3 class="section-title">Level 2 — Interview</h3>
+        <div id="questionArea" class="qbox"></div>
+        <div class="controls">
+          <button id="nextQBtn" class="btn">Next Question</button>
+          <button id="submitAnswersBtn" class="btn primary">Submit Answers</button>
+        </div>
+      </section>
+
+      <section id="results" class="card">
+        <h3 class="section-title">Level 3 — Results</h3>
+        <div id="scoreCard" class="scorecard"></div>
+        <div class="controls">
+          <button id="saveBtn" class="btn" title="Saved automatically">Save Results</button>
+          <button id="restartBtn" class="btn ghost">Restart</button>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="foot">
+      <small>Made for classroom use — change admin password in server before deployment.</small>
+    </footer>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
