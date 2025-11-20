@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="/static/css/landing.css">
 </head>
 <body>
+
+  <!-- HEADER -->
   <header class="site-header">
     <div class="header-inner">
       <div class="brand-left">HRQuest</div>
@@ -16,40 +18,49 @@
         <a class="nav-link" href="#">Community</a>
         <a class="nav-link" href="#">FAQ</a>
       </nav>
-      <div class="header-empty"></div>
+      <div class="header-right"></div>
     </div>
   </header>
 
+  <!-- HERO -->
   <main class="hero">
     <div class="hero-background"></div>
 
-    <!-- giant behind text -->
+    <!-- decorative background -->
     <div class="giant-text" aria-hidden="true">HR</div>
 
+    <!-- portrait glow and sparkles -->
+    <div class="portrait-glow"></div>
+    <div class="portrait-spark1"></div>
+    <div class="portrait-spark2"></div>
+
     <div class="hero-inner">
+
+      <!-- LEFT IMAGE -->
       <section class="hero-left" aria-hidden="true">
         <div class="portrait-wrap">
-          <!-- LOCAL PATH (from our session). If you want the repo copy, change src to /static/images/student.png -->
           <img id="studentImg" src="/static/images/student.png" alt="Student portrait">
-
         </div>
       </section>
 
-      <section class="hero-right" role="region" aria-labelledby="hero-h">
-        <h2 id="hero-h" class="kicker">Practice with Simulations</h2>
-        <p class="lead">The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.</p>
+      <!-- RIGHT TEXT -->
+      <section class="hero-right">
+        <h2 class="kicker">Practice with Simulations</h2>
+        <p class="lead">
+          The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.
+        </p>
+
         <div class="cta-row">
           <button class="btn-cta" onclick="location.href='/profile'">
             Get Started <span class="arrow">→</span>
           </button>
         </div>
       </section>
+
     </div>
   </main>
 
-  <footer class="site-footer">
-    <small>Made for classroom assessment • HRQuest</small>
-  </footer>
+  <!-- FOOTER REMOVED -->
 
   <script src="/static/js/landing.js"></script>
 </body>
