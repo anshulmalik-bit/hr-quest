@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HR Quest | The Simulation</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Add FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         /* =========================================
@@ -30,12 +32,12 @@
             color: var(--dark-text);
             min-height: 100vh;
             overflow-x: hidden;
+            scroll-behavior: smooth; /* Enables smooth scrolling */
         }
 
         /* --- LANDING PAGE STYLES --- */
         #landing-page {
             width: 100%;
-            height: 100vh;
             display: flex;
             flex-direction: column;
         }
@@ -45,6 +47,11 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 60px;
+            background: rgba(255, 255, 255, 0.1); /* Glassmorphism */
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo {
@@ -58,13 +65,18 @@
             color: #334155;
             font-weight: 500;
             font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-teal);
         }
 
         .hero-section {
+            min-height: 90vh; /* Fill most of screen */
             display: flex;
             align-items: center;
             justify-content: center;
-            flex: 1;
             padding: 0 10%;
             gap: 40px;
         }
@@ -91,6 +103,9 @@
             max-width: 380px;
             z-index: 2;
             filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
+            /* Placeholder styling in case image breaks */
+            min-height: 300px; 
+            object-fit: contain;
         }
 
         .hero-content {
@@ -138,6 +153,40 @@
             background: var(--dark-text);
             color: white;
         }
+        
+        /* --- NEW INFO SECTIONS --- */
+        .info-section {
+            padding: 80px 10%;
+            background: white;
+            border-radius: 40px 40px 0 0;
+            box-shadow: 0 -20px 40px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #0f172a;
+        }
+        
+        .grid-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        
+        .feature-card {
+            padding: 30px;
+            background: #f8fafc;
+            border-radius: 20px;
+            transition: transform 0.3s;
+        }
+        .feature-card:hover { transform: translateY(-5px); }
+        .feature-icon { font-size: 2rem; color: var(--accent-teal); margin-bottom: 20px; }
+        .feature-card h3 { margin-bottom: 10px; font-size: 1.2rem; }
+        .feature-card p { color: #64748b; line-height: 1.5; }
 
         /* --- GAME INTERFACE STYLES --- */
         #game-container {
@@ -205,10 +254,10 @@
         @keyframes pulse { 50% { opacity: 0.5; } }
 
         @media (max-width: 900px) {
-            .hero-section { flex-direction: column; text-align: center; gap: 20px; }
+            .hero-section { flex-direction: column; text-align: center; gap: 20px; padding-top: 100px; }
             .hero-content { text-align: center; }
             .main-headline { font-size: 6rem; }
-            .nav-links { display: none; }
+            .navbar { padding: 20px; flex-direction: column; gap: 15px; }
         }
     </style>
 </head>
@@ -218,21 +267,32 @@
          PART 1: LANDING PAGE 
          ==================== -->
     <div id="landing-page">
+        <!-- Navigation with Anchor Links -->
         <nav class="navbar">
             <div class="logo">HR Quest</div>
             <div class="nav-links">
-                <a href="#">Exercises</a>
-                <a href="#">Resources</a>
-                <a href="#">Community</a>
-                <a href="#">FAQ</a>
+                <a href="#exercises">Exercises</a>
+                <a href="#faq">FAQ</a>
             </div>
         </nav>
 
+        <!-- Hero Section -->
         <div class="hero-section">
+            <!-- Left: 3D Character -->
             <div class="hero-image-wrapper">
                 <div class="circle-bg"></div>
-                <img src="https://cdn3d.iconscout.com/3d/premium/thumb/female-student-holding-books-2974934-2477365.png" alt="3D Student" class="hero-avatar">
+                <!-- 
+                  IMAGE INSTRUCTIONS:
+                  1. Replace the 'src' below with the path to your image.
+                  2. Recommended size: 500x500px with transparent background (PNG).
+                  3. Place your file in the 'static' folder and use: src="{{ url_for('static', filename='your-image.png') }}"
+                  
+                  Current: Using a reliable placeholder service so it is not empty.
+                -->
+                <img src="{{ url_for('static', filename='hero-avatar.png') }}" alt="Student Avatar" class="hero-avatar">
             </div>
+
+            <!-- Right: Text Content -->
             <div class="hero-content">
                 <p class="sub-headline">Practice with Simulations</p>
                 <h1 class="main-headline">HR</h1>
@@ -240,6 +300,38 @@
                     The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.
                 </p>
                 <button class="cta-button" onclick="enterGame()">Start the Game</button>
+            </div>
+        </div>
+
+        <!-- INFO SECTIONS (So the buttons work) -->
+        <div class="info-section">
+            <div id="exercises" style="padding-top: 60px;">
+                <h2 class="section-title">Available Exercises</h2>
+                <div class="grid-features">
+                    <div class="feature-card">
+                        <i class="fas fa-file-alt feature-icon"></i>
+                        <h3>Resume Scanning</h3>
+                        <p>Test your resume against our AI-powered ATS logic.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-users feature-icon"></i>
+                        <h3>Situation Logic</h3>
+                        <p>Solve complex workplace conflicts and dilemmas.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-microphone feature-icon"></i>
+                        <h3>Video Interview</h3>
+                        <p>Coming Soon: Practice speaking with an AI Avatar.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="faq" style="margin-top: 80px; padding-bottom: 40px;">
+                <h2 class="section-title">FAQ</h2>
+                <div style="max-width: 600px; margin: 0 auto; text-align: left;">
+                    <p><strong>Q: Is this free?</strong><br>A: Yes, the basic levels are free to play.</p>
+                    <p><strong>Q: Do you save my resume?</strong><br>A: No, resumes are analyzed in memory and discarded immediately.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -290,140 +382,6 @@
         </div>
     </div>
 
-    <!-- ==================== 
-         JAVASCRIPT LOGIC 
-         ==================== -->
-    <script>
-        // --- LANDING PAGE TRANSITION ---
-        function enterGame() {
-            const landing = document.getElementById('landing-page');
-            const game = document.getElementById('game-container');
-            
-            // Fade out landing
-            landing.style.transition = 'opacity 0.5s';
-            landing.style.opacity = '0';
-
-            setTimeout(() => {
-                landing.style.display = 'none';
-                
-                // Show game
-                game.style.display = 'flex';
-                game.style.opacity = '0';
-                game.style.transition = 'opacity 0.5s';
-                
-                // Fade in game
-                setTimeout(() => {
-                    game.style.opacity = '1';
-                }, 50);
-            }, 500);
-        }
-
-        // --- LEVEL 1: RESUME SCAN ---
-        async function uploadResume() {
-            const fileInput = document.getElementById('resumeInput');
-            const file = fileInput.files[0];
-
-            if (!file) {
-                alert("⚠️ No Armor Equipped! Please select a PDF.");
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('resume', file);
-
-            document.getElementById('game-status').innerText = "⚔️ ANALYZING ARMOR STATS...";
-
-            try {
-                const response = await fetch('/api/scan_resume', {
-                    method: 'POST',
-                    body: formData
-                });
-                const data = await response.json();
-
-                if (response.ok) {
-                    document.getElementById('level1-section').style.display = 'none';
-
-                    document.getElementById('result-area').innerHTML = `
-                        <div class="level-complete-card">
-                            <div class="header-banner" style="background:#e0f2f1; color:#00695c; padding:5px 15px; border-radius:20px; display:inline-block; margin-bottom:15px; font-weight:bold;">LEVEL 1 COMPLETE</div>
-                            <div class="stats-container">
-                                <div class="score-box"><div class="value">${data.ats_score}</div><div class="label">ATS SCORE</div></div>
-                                <div class="xp-box"><div class="value">+${data.xp_earned}</div><div class="label">XP GAINED</div></div>
-                            </div>
-                            <div class="character-reveal"><h3 style="color:#00bcd4">Class: ${data.character_class}</h3></div>
-                            <div class="boss-feedback"><p>"${data.feedback}"</p></div>
-                            <button class="next-level-btn" onclick="startLevel2()">ENTER LEVEL 2 ➡️</button>
-                        </div>
-                    `;
-                } else {
-                    alert("Error: " + data.error);
-                    document.getElementById('game-status').innerText = "";
-                }
-            } catch (error) {
-                console.error(error);
-                alert("Connection Failed. Is the server running?");
-                document.getElementById('game-status').innerText = "";
-            }
-        }
-
-        // --- LEVEL 2: INIT ---
-        async function startLevel2() {
-            document.getElementById('result-area').innerHTML = "";
-            document.getElementById('level-title').innerText = "LEVEL 2: THE LOGIC LABYRINTH";
-            document.getElementById('level2-section').style.display = 'block';
-            document.getElementById('l2-scenario-title').innerText = "LOADING QUEST...";
-
-            try {
-                const res = await fetch('/api/get_level2_question');
-                const q = await res.json();
-                
-                document.getElementById('l2-scenario-title').innerText = q.title;
-                document.getElementById('l2-scenario-text').innerText = q.text;
-                document.getElementById('l2-question-id').value = q.id;
-                
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
-        // --- LEVEL 2: SUBMIT ---
-        async function submitLevel2() {
-            const answer = document.getElementById('l2-answer').value;
-            const q_id = document.getElementById('l2-question-id').value;
-
-            if (answer.length < 5) {
-                alert("Please type a longer answer.");
-                return;
-            }
-
-            document.getElementById('l2-status').innerText = "🧠 JUDGING LOGIC...";
-
-            try {
-                const res = await fetch('/api/judge_level2', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ answer: answer, question_id: q_id })
-                });
-                const data = await res.json();
-
-                document.getElementById('level2-section').style.display = 'none';
-
-                document.getElementById('result-area').innerHTML = `
-                    <div class="level-complete-card">
-                        <div class="header-banner" style="background:#e0f2f1; color:#00695c; padding:5px 15px; border-radius:20px; display:inline-block; margin-bottom:15px; font-weight:bold;">LEVEL 2 COMPLETE</div>
-                        <div class="stats-container">
-                            <div class="score-box"><div class="value">${data.score}</div><div class="label">LOGIC SCORE</div></div>
-                            <div class="xp-box"><div class="value">+${data.xp}</div><div class="label">XP GAINED</div></div>
-                        </div>
-                        <div class="boss-feedback"><p>"${data.feedback}"</p></div>
-                        <button class="next-level-btn" onclick="alert('Level 3 Coming Soon!')">CLAIM REWARD 🏆</button>
-                    </div>
-                `;
-
-            } catch (e) {
-                console.error(e);
-            }
-        }
-    </script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
