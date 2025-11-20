@@ -7,348 +7,302 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    color: #e0e0e0; /* Light grey text for dark background */
+    color: #1a1a1a; /* Dark Grey/Black Text */
+    background-color: #ffffff; /* White Background */
     line-height: 1.6;
-    background-color: #0d0e12; /* Dark base background */
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    overflow-x: hidden;
 }
 
-/* Background Gradient Effect */
-.background-gradient {
+/* Subtle colorful blur in background for modern feel */
+.background-blur {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at top left, rgba(40, 50, 70, 0.4) 0%, transparent 40%),
-                radial-gradient(circle at bottom right, rgba(20, 30, 50, 0.4) 0%, transparent 40%);
-    z-index: -1; /* Behind other content */
-    opacity: 0.6;
+    top: -20%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(108, 99, 255, 0.1) 0%, rgba(255,255,255,0) 70%);
+    z-index: -1;
+    border-radius: 50%;
 }
 
-
-/* NAVIGATION - DARK THEME */
-.navbar-dark {
+/* NAVIGATION */
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 4%; /* Slightly less padding to match example */
-    background: rgba(13, 14, 18, 0.7); /* Semi-transparent dark background */
-    backdrop-filter: blur(8px); /* Frosted glass effect */
-    position: relative; /* For z-index to be above content */
-    z-index: 10;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Subtle border */
+    padding: 25px 5%;
+    background: rgba(255, 255, 255, 0.9); /* Translucent White */
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-.logo-dark {
-    font-weight: 700;
-    font-size: 1.6rem;
-    color: #fff;
-    letter-spacing: 0.5px;
+.logo {
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: #000;
+    letter-spacing: -0.5px;
 }
 
-.nav-links-dark a {
-    margin-left: 30px;
+.nav-links a {
+    margin-left: 35px;
     text-decoration: none;
-    color: #b0b0b0; /* Lighter grey for links */
+    color: #555;
     font-weight: 500;
+    font-size: 0.95rem;
     transition: color 0.3s;
 }
 
-.nav-links-dark a:hover {
-    color: #fff;
+.nav-links a:hover {
+    color: #000;
 }
 
 .nav-actions {
     display: flex;
     gap: 15px;
+    align-items: center;
 }
 
 .nav-button {
-    padding: 10px 20px;
-    border-radius: 25px;
     text-decoration: none;
     font-weight: 600;
-    transition: background-color 0.3s, color 0.3s;
     font-size: 0.9rem;
+    padding: 10px 20px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
 }
 
-.signup-button {
+.login-button {
+    color: #000;
+}
+
+.primary-button {
+    background-color: #000;
     color: #fff;
-    background-color: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-.signup-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.connect-button {
-    background: linear-gradient(90deg, #6C63FF, #8a2be2); /* Purple/blue gradient */
-    color: #fff;
-    border: none;
-    box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
-}
-
-.connect-button:hover {
-    opacity: 0.9;
+.primary-button:hover {
+    background-color: #333;
+    transform: translateY(-2px);
 }
 
 
-/* HERO SECTION - DARK THEME */
-.hero-dark {
+/* HERO SECTION */
+.hero {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: calc(100vh - 80px); /* Adjust height based on nav */
-    padding: 0 4%; /* Remove top/bottom padding as content is centered */
+    min-height: 85vh;
+    padding: 0 5%;
     position: relative;
-    padding-top: 50px; /* Space from nav */
-    padding-bottom: 50px;
 }
 
+/* Hero Left Text */
 .hero-left {
     flex: 1;
-    max-width: 450px;
-    z-index: 2; /* Ensure it's above image glow */
+    z-index: 2;
+    padding-right: 20px;
 }
 
 .main-title .small-text {
     display: block;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #b0b0b0;
-    margin-bottom: 10px;
-    letter-spacing: 1px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #6C63FF; /* Accent Color */
+    margin-bottom: 15px;
+    letter-spacing: 2px;
 }
 
 .main-title .large-text {
-    display: block;
-    font-size: 7rem; /* Much larger, like the example */
+    font-size: 6rem;
     font-weight: 900;
-    color: #fff;
-    line-height: 0.8;
+    color: #000;
+    line-height: 0.9;
     letter-spacing: -3px;
-    text-shadow: 0 5px 20px rgba(0,0,0,0.3);
 }
 
 .hero-description {
     font-size: 1.1rem;
-    color: #c0c0c0;
-    margin-top: 25px;
-    margin-bottom: 40px;
-    line-height: 1.5;
+    color: #666;
+    margin: 30px 0;
+    max-width: 400px;
 }
 
-.discover-button {
-    display: inline-block;
-    background: linear-gradient(90deg, #6C63FF, #8a2be2); /* Match connect button */
-    color: #fff;
-    padding: 15px 30px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: transform 0.2s, opacity 0.2s;
-    box-shadow: 0 8px 25px rgba(108, 99, 255, 0.4);
-}
-
-.discover-button:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
-}
-
-
-/* HERO CENTER IMAGE */
-.hero-center-image {
-    position: absolute; /* Position relative to hero-dark */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 600px; /* Adjust size */
-    height: 600px;
+.button-group {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1; /* Below text, above background */
-    pointer-events: none; /* Allows clicks to pass through */
-}
-
-.image-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.student-image {
-    max-width: 80%; /* Adjust image size within container */
-    max-height: 80%;
-    object-fit: contain;
-    border-radius: 50%; /* Make the image circular */
-    filter: brightness(0.9) saturate(0.8); /* Slight dark/desaturated to fit theme */
-}
-
-.glow-effect {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%; /* Slightly smaller than container */
-    height: 90%;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(108, 99, 255, 0.2) 0%, rgba(108, 99, 255, 0) 70%);
-    opacity: 0.7;
-    z-index: -1;
-}
-
-
-/* HERO RIGHT */
-.hero-right {
-    flex: 1;
-    text-align: right;
-    max-width: 300px;
-    z-index: 2;
-}
-
-.tagline {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #e0e0e0;
-    margin-bottom: 50px;
-    line-height: 1.2;
-}
-
-.social-proof {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
     gap: 20px;
 }
 
-.proof-item {
-    background: rgba(255, 255, 255, 0.08); /* Dark glass effect */
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    padding: 15px 20px;
-    color: #f0f0f0;
+.cta-button {
+    display: inline-block;
+    background-color: #000;
+    color: #fff;
+    padding: 16px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    transition: transform 0.2s;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+}
+
+.secondary-button {
+    display: inline-block;
+    padding: 16px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    color: #000;
+    background-color: #f5f5f5;
+    transition: background-color 0.2s;
+}
+
+.secondary-button:hover {
+    background-color: #e0e0e0;
+}
+
+
+/* Hero Center Image */
+.hero-center-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.image-card {
+    width: 400px;
+    height: 500px;
+    background-color: #f0f0f0;
+    border-radius: 200px 200px 0 0; /* Arch shape */
+    overflow: hidden;
+    position: relative;
+    box-shadow: 20px 20px 60px rgba(0,0,0,0.05); /* Soft Shadow */
+}
+
+.student-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Floating elements for depth */
+.floating-badge {
+    position: absolute;
+    bottom: 50px;
+    right: -20px;
+    background: white;
+    padding: 15px 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
     font-size: 0.9rem;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+
+/* Hero Right Stats */
+.hero-right {
+    flex: 0.5;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 40px;
+}
+
+.stat-box {
+    text-align: right;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #000;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #888;
     font-weight: 500;
 }
 
-/* FOOTER - DARK THEME */
-.footer-dark {
+.scrolldown {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: #aaa;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.scrolldown .line {
+    width: 1px;
+    height: 40px;
+    background-color: #ccc;
+}
+
+/* FOOTER */
+.footer {
     text-align: center;
-    padding: 30px;
-    background: rgba(13, 14, 18, 0.8);
-    color: #808080;
-    font-size: 0.85rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    position: relative;
-    z-index: 10;
+    padding: 40px;
+    color: #888;
+    font-size: 0.9rem;
+    border-top: 1px solid #f0f0f0;
 }
 
-
-/* MEDIA QUERIES FOR RESPONSIVENESS */
-@media (max-width: 1200px) {
-    .main-title .large-text {
-        font-size: 5rem;
-    }
-    .hero-center-image {
-        width: 500px;
-        height: 500px;
-    }
-    .tagline {
-        font-size: 1.5rem;
-    }
-}
-
-@media (max-width: 992px) {
-    .hero-dark {
+/* Responsive Tweak */
+@media (max-width: 1024px) {
+    .hero {
         flex-direction: column;
         text-align: center;
-        padding-top: 80px;
-        padding-bottom: 80px;
-        min-height: auto;
+        padding-top: 60px;
     }
-
+    
     .hero-left, .hero-right {
-        max-width: 100%;
-        margin-bottom: 50px;
-        text-align: center;
-    }
-
-    .hero-left {
-        order: 2; /* Move text below image */
-    }
-
-    .hero-center-image {
-        position: static; /* Remove absolute positioning */
-        transform: none;
-        width: 100%;
-        max-width: 400px;
-        height: auto;
-        margin-bottom: 50px;
-        order: 1; /* Move image to the top */
-    }
-
-    .student-image {
-        width: 100%;
-        height: auto;
-        max-width: 300px; /* Constrain image size */
-    }
-
-    .glow-effect {
-        width: 100%;
-        height: 100%;
-    }
-
-    .main-title .large-text {
-        font-size: 4rem;
-    }
-
-    .hero-right {
-        order: 3;
-        text-align: center;
-    }
-
-    .social-proof {
+        padding: 0;
         align-items: center;
+        text-align: center;
     }
-
-    .nav-links-dark {
-        display: none; /* Hide for smaller screens, implement hamburger menu if needed */
+    
+    .hero-right {
+        flex-direction: row;
+        margin-top: 50px;
+        width: 100%;
+        justify-content: center;
     }
-}
-
-@media (max-width: 600px) {
-    .navbar-dark {
-        padding: 15px 4%;
+    
+    .stat-box {
+        text-align: center;
     }
-    .logo-dark {
-        font-size: 1.3rem;
+    
+    .hero-center-image {
+        margin: 50px 0;
     }
-    .nav-actions {
-        gap: 8px;
-    }
-    .nav-button {
-        padding: 8px 15px;
-        font-size: 0.8rem;
-    }
-    .main-title .large-text {
-        font-size: 3rem;
-        letter-spacing: -1px;
-    }
-    .hero-description {
-        font-size: 1rem;
-    }
-    .discover-button {
-        padding: 12px 25px;
-        font-size: 0.9rem;
-    }
-    .tagline {
-        font-size: 1.2rem;
+    
+    .button-group {
+        justify-content: center;
     }
 }
