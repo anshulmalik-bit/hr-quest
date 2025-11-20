@@ -1,9 +1,9 @@
-/* landing.css — tuned to match reference exactly */
+/* landing.css — final pixel-tuned version with HRQuest on the right */
 :root{
   --bg-start: #7DD8D4;
   --bg-end: #DFF8F4;
   --card-bg: rgba(239, 252, 250, 0.92);
-  --accent: #0b1a22;    /* deep navy for headlines */
+  --accent: #0b1a22;
   --muted: #6e7b81;
   --glass-radius: 18px;
   --page-max: 1280px;
@@ -11,15 +11,22 @@
 
 /* global */
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family: 'Poppins', Inter, system-ui, Arial; color:var(--accent); -webkit-font-smoothing:antialiased}
+html,body{
+  height:100%;
+  margin:0;
+  font-family:'Poppins', Inter, system-ui, Arial;
+  color:var(--accent);
+  -webkit-font-smoothing:antialiased;
+  background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+}
 .page-wrap{max-width:var(--page-max);margin:28px auto;padding:18px}
 
 /* topbar */
-.topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 24px}
-.logo{font-weight:700;font-size:20px;letter-spacing:0.6px}
-.nav{display:flex;gap:26px;align-items:center}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 22px}
+.top-left .logo{font-weight:700;font-size:20px;letter-spacing:0.6px}
+.nav{display:flex;gap:24px;align-items:center;flex:1;justify-content:center}
 .nav-link{color:var(--muted);text-decoration:none;font-size:15px}
-.nav-cta{background:var(--accent);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px}
+.top-right .brand-right{background:linear-gradient(90deg,#0b1a22,#0d2a3a);color:#fff;padding:8px 14px;border-radius:999px;font-weight:700;box-shadow:0 10px 30px rgba(11,26,34,0.12)}
 
 /* hero card container (glass card) */
 .hero-card{
@@ -31,7 +38,9 @@ html,body{height:100%;margin:0;font-family: 'Poppins', Inter, system-ui, Arial; 
   min-height:76vh;
   padding:36px;
   border-radius:var(--glass-radius);
-  background: linear-gradient(180deg, var(--card-bg) 0%, rgba(240,255,254,0.9) 100%);
+  background: rgba(255,255,255,0.35);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   overflow:visible;
   box-shadow: 0 30px 80px rgba(7,20,30,0.08);
   border: 1px solid rgba(255,255,255,0.35);
@@ -42,7 +51,7 @@ html,body{height:100%;margin:0;font-family: 'Poppins', Inter, system-ui, Arial; 
   position:absolute;
   right:80px;
   top:28px;
-  font-size:430px;           /* MATCH: very large */
+  font-size:430px;
   line-height:0.8;
   font-weight:800;
   color:var(--accent);
@@ -59,10 +68,10 @@ html,body{height:100%;margin:0;font-family: 'Poppins', Inter, system-ui, Arial; 
 .circle-left{left:38px;top:34px;width:360px;height:360px;background:radial-gradient(circle at 40% 40%, rgba(255,255,255,0.6), rgba(255,255,255,0.04) 30%, transparent 60%);opacity:0.9}
 .circle-right{right:24px;top:120px;width:240px;height:240px;background:radial-gradient(circle at 50% 50%, rgba(255,255,255,0.6), rgba(255,255,255,0.02) 30%, transparent 60%);opacity:0.85}
 
-/* hero-left portrait card (no white rectangle, smooth card behind image) */
+/* hero-left portrait card */
 .hero-left{position:relative;z-index:3;display:flex;align-items:center;justify-content:center}
 .portrait-card{
-  width:480px;
+  width:520px;
   height:auto;
   border-radius:18px;
   padding:8px;
@@ -76,7 +85,7 @@ html,body{height:100%;margin:0;font-family: 'Poppins', Inter, system-ui, Arial; 
 }
 .portrait-card img{
   display:block;
-  width:520px;            /* slightly larger so the portrait crops like reference */
+  width:560px;
   max-width:none;
   height:auto;
   transform: translateY(4px);
@@ -117,3 +126,6 @@ html,body{height:100%;margin:0;font-family: 'Poppins', Inter, system-ui, Arial; 
   .portrait-card img{width:320px}
   .lead{font-size:15px}
 }
+
+/* Accessibility helper */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
