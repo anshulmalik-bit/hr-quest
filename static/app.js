@@ -1,109 +1,114 @@
-// Wait for the DOM to load
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("HR Quest System Online 🟢");
-});
-
+// LEVEL 1: RESUME SCAN
 async function uploadResume() {
-    // 1. Get the file from the input
     const fileInput = document.getElementById('resumeInput');
     const file = fileInput.files[0];
 
-    // 2. Input Validation
     if (!file) {
-        alert("⚠️ No Armor Equipped! Please select a PDF file.");
+        alert("⚠️ No Armor Equipped!");
         return;
     }
 
-    // 3. Prepare the data for Python
     const formData = new FormData();
-    formData.append('resume', file); // This key 'resume' matches request.files['resume'] in Flask
+    formData.append('resume', file);
 
-    // 4. Show Loading State (Gamified)
-    const statusDiv = document.getElementById('game-status');
-    const resultArea = document.getElementById('result-area');
-    
-    statusDiv.innerHTML = `
-        <div class="loading-text">
-            <span class="blink">⚔️ ANALYZING ARMOR STATS...</span>
-        </div>
-    `;
-    statusDiv.style.color = "#ffd700"; // Gold color
+    document.getElementById('game-status').innerText = "⚔️ ANALYZING ARMOR STATS...";
 
     try {
-        // 5. Send to Backend (FIXED URL HERE)
         const response = await fetch('/api/scan_resume', {
             method: 'POST',
             body: formData
         });
-
         const data = await response.json();
 
-        // 6. Handle Success
         if (response.ok) {
-            statusDiv.innerHTML = ""; // Clear loading text
-            
-            // Hide the upload form to reduce clutter
-            document.querySelector('.upload-section').style.display = 'none';
+            // Hide Upload Form
+            document.getElementById('level1-section').style.display = 'none';
 
-            // Inject the Gamified Result Card
-            resultArea.innerHTML = `
-                <div class="level-complete-card" style="animation: slideUp 0.5s ease;">
+            // Show Results
+            document.getElementById('result-area').innerHTML = `
+                <div class="level-complete-card">
                     <div class="header-banner">LEVEL 1 COMPLETE</div>
-                    
                     <div class="stats-container">
-                        <div class="score-box">
-                            <div class="label">ATS SCORE</div>
-                            <div class="value" style="color: ${getScoreColor(data.ats_score)}">
-                                ${data.ats_score}/100
-                            </div>
-                        </div>
-                        
-                        <div class="xp-box">
-                            <div class="label">XP GAINED</div>
-                            <div class="value">+${data.xp_earned} XP</div>
-                        </div>
+                        <div class="score-box"><div class="value">${data.score}</div><div class="label">ATS SCORE</div></div>
+                        <div class="xp-box"><div class="value">+${data.xp}</div><div class="label">XP GAINED</div></div>
                     </div>
-
-                    <div class="character-reveal">
-                        <h3>🔓 Class Unlocked: <span style="color: #00ff00">${data.character_class}</span></h3>
-                    </div>
-
-                    <div class="boss-feedback">
-                        <p><strong>HR BOSS SAYS:</strong></p>
-                        <p>"${data.feedback}"</p>
-                    </div>
-
-                    <button class="next-level-btn" onclick="startLevel2()">
-                        ENTER LEVEL 2: THE INTERVIEW ➡️
-                    </button>
+                    <div class="character-reveal"><h3>Class: ${data.char_class}</h3></div>
+                    <div class="boss-feedback"><p>"${data.feedback}"</p></div>
+                    <button class="next-level-btn" onclick="startLevel2()">ENTER LEVEL 2 ➡️</button>
                 </div>
             `;
-            
-            // Optional: Play a success sound here if you have one
-            // new Audio('/static/sounds/levelup.mp3').play();
-
         } else {
-            // Handle Server Errors (e.g., PDF corrupted)
-            statusDiv.innerHTML = `❌ SYSTEM ERROR: ${data.error}`;
-            statusDiv.style.color = "red";
+            alert("Error: " + data.error);
         }
-
     } catch (error) {
-        // Handle Network Errors
-        console.error('Error:', error);
-        statusDiv.innerHTML = "❌ CONNECTION LOST. Check server logs.";
-        statusDiv.style.color = "red";
+        console.error(error);
+        alert("Connection Failed");
     }
 }
 
-// Helper function to color-code the score
-function getScoreColor(score) {
-    if (score >= 80) return "#00ff00"; // Green (High)
-    if (score >= 50) return "#ffd700"; // Gold (Mid)
-    return "#ff4444"; // Red (Low)
+// LEVEL 2: INIT
+async function startLevel2() {
+    // Hide Level 1 Results
+    document.getElementById('result-area').innerHTML = "";
+    
+    // Update Title
+    document.getElementById('level-title').innerText = "LEVEL 2: THE LOGIC LABYRINTH";
+
+    // Show Level 2 Section
+    document.getElementById('level2-section').style.display = 'block';
+    document.getElementById('l2-scenario-title').innerText = "LOADING QUEST...";
+
+    // Fetch Question
+    try {
+        const res = await fetch('/api/get_level2_question');
+        const q = await res.json();
+        
+        document.getElementById('l2-scenario-title').innerText = q.title;
+        document.getElementById('l2-scenario-text').innerText = q.text;
+        document.getElementById('l2-question-id').value = q.id;
+        
+    } catch (e) {
+        console.error(e);
+    }
 }
 
-function startLevel2() {
-    alert("Level 2 (The Interview) is under construction! 🚧");
-    // logic to redirect or show the chat interface would go here
+// LEVEL 2: SUBMIT
+async function submitLevel2() {
+    const answer = document.getElementById('l2-answer').value;
+    const q_id = document.getElementById('l2-question-id').value;
+
+    if (answer.length < 5) {
+        alert("Please type a longer answer.");
+        return;
+    }
+
+    document.getElementById('l2-status').innerText = "🧠 JUDGING LOGIC...";
+
+    try {
+        const res = await fetch('/api/judge_level2', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ answer: answer, question_id: q_id })
+        });
+        const data = await res.json();
+
+        // Hide Input
+        document.getElementById('level2-section').style.display = 'none';
+
+        // Show Results
+        document.getElementById('result-area').innerHTML = `
+            <div class="level-complete-card">
+                <div class="header-banner">LEVEL 2 COMPLETE</div>
+                <div class="stats-container">
+                    <div class="score-box"><div class="value">${data.score}</div><div class="label">LOGIC SCORE</div></div>
+                    <div class="xp-box"><div class="value">+${data.xp}</div><div class="label">XP GAINED</div></div>
+                </div>
+                <div class="boss-feedback"><p>"${data.feedback}"</p></div>
+                <button class="next-level-btn" onclick="alert('Level 3 Coming Soon!')">CLAIM REWARD 🏆</button>
+            </div>
+        `;
+
+    } catch (e) {
+        console.error(e);
+    }
 }
