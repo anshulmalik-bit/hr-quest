@@ -1,160 +1,107 @@
-/* RESET & FONTS */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
+/* static/style.css */
 body {
-    background-color: #0f0f13;
-    color: #e0e0e0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* CHANGED: Use min-height instead of height to allow scrolling on phones */
-    min-height: 100vh; 
+    background-color: #0d1117;
+    color: #c9d1d9;
+    font-family: 'Courier New', monospace;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px 10px; /* Add padding so edges don't touch screen on mobile */
+    min-height: 100vh;
+    margin: 0;
 }
 
-/* GAME CONTAINER */
 .main-container {
-    width: 100%;
-    max-width: 600px; /* Keeps it looking nice on Desktop */
-    background: #1a1a24;
-    border: 1px solid #333;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    /* ADDED: specific mobile handling */
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+}
+
+/* Glitchy Title */
+.glitch-text {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #58a6ff;
+    text-shadow: 2px 2px #d2a8ff;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: #8b949e;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 1rem;
+}
+
+/* Cards */
+.briefing-card, .level-complete-card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+/* Inputs & Buttons */
+.input-group {
     display: flex;
     flex-direction: column;
-}
-
-/* HUD */
-.game-hud {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid #333;
-    padding-bottom: 10px;
-}
-.logo { 
-    font-weight: 900; 
-    font-size: 1.2rem; 
-    letter-spacing: 2px; 
-    color: #fff; 
-}
-.beta-tag { 
-    font-size: 0.7rem; 
-    background: #ff0055; 
-    padding: 2px 6px; 
-    border-radius: 4px; 
-    vertical-align: middle;
-    margin-left: 5px;
-}
-#player-xp { color: #00ff88; font-weight: bold; font-family: monospace; }
-
-/* CARD STYLES */
-.quest-card { text-align: center; width: 100%; }
-h1 { color: #fff; margin-bottom: 10px; font-size: 1.8rem; } /* Slightly smaller default */
-.quest-desc { color: #888; margin-bottom: 2rem; line-height: 1.5; }
-
-/* UPLOAD BUTTONS */
-.drop-zone {
-    border: 2px dashed #444;
-    padding: 2rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    transition: 0.3s;
-    width: 100%;
-}
-.drop-zone:hover { border-color: #00ff88; background: #1f1f2e; }
-
-.upload-btn {
-    background: #333;
-    color: #fff;
-    padding: 12px 20px; /* Larger touch target for fingers */
-    border-radius: 4px;
-    cursor: pointer;
-    display: inline-block;
-    width: 100%; /* Full width on mobile is easier to tap */
-    max-width: 300px;
-}
-.upload-btn:hover { background: #444; }
-#file-name { 
-    display: block; 
-    margin-top: 10px; 
-    font-size: 0.9rem; 
-    color: #666; 
-    word-break: break-all; /* Prevents long filenames breaking layout */
-}
-
-.action-btn {
-    background: linear-gradient(45deg, #007bff, #00ff88);
-    border: none;
-    padding: 15px 30px;
-    color: #000;
-    font-weight: bold;
-    border-radius: 50px;
-    font-size: 1rem;
-    cursor: pointer;
-    opacity: 0.5;
-    transition: 0.3s;
-    width: 100%; /* Full width button on mobile */
-}
-.action-btn:not([disabled]) { opacity: 1; box-shadow: 0 0 15px #00ff88aa; }
-
-/* RESULTS CARD */
-.score-circle {
-    width: 100px; /* Slightly smaller for mobile */
-    height: 100px;
-    border-radius: 50%;
-    border: 5px solid #00ff88;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    font-weight: bold;
-    margin: 0 auto 1rem auto;
-    color: #00ff88;
-    box-shadow: 0 0 20px rgba(0,255,136, 0.2);
-}
-.archetype { color: #ff0055; font-size: 1.1rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px;}
-
-.boss-box {
-    background: #2a2a35;
-    border-left: 4px solid #ff0055;
-    padding: 15px;
+    gap: 15px;
     margin-top: 20px;
-    text-align: left;
+}
+
+.file-input {
+    background: #0d1117;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+    padding: 10px;
+}
+
+.start-btn, .next-level-btn {
+    background-color: #238636;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+.start-btn:hover {
+    background-color: #2ea043;
+    transform: scale(1.02);
+}
+
+/* Stats & Results */
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    background: #0d1117;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.value {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.boss-feedback {
     font-style: italic;
-    font-size: 0.95rem;
+    color: #ff7b72;
+    margin: 15px 0;
+    border-left: 3px solid #ff7b72;
+    padding-left: 10px;
 }
 
-/* UTILS */
-.hidden { display: none; }
-.loader { width: 100%; height: 4px; background: #333; margin: 20px 0; position: relative; overflow: hidden;}
-.scanner-line {
-    width: 30%; height: 100%; background: #00ff88;
-    position: absolute; animation: scan 1s infinite linear;
+.blink {
+    animation: blinker 1.5s linear infinite;
+    color: #e3b341;
 }
-@keyframes scan { 0% { left: -30%; } 100% { left: 100%; } }
 
-/* --- MOBILE SPECIFIC ADJUSTMENTS --- */
-@media (max-width: 480px) {
-    .main-container {
-        padding: 1.2rem; /* Less padding on small screens */
-        border: none; /* Remove border on mobile for cleaner look */
-        box-shadow: none;
-        background: transparent;
-    }
-    
-    body {
-        align-items: flex-start; /* Start from top, don't center vertically */
-        padding-top: 10px;
-    }
-
-    h1 { font-size: 1.5rem; }
-    .logo { font-size: 1rem; }
-    
-    /* Stack flex items if needed (not needed for HUD, but good for stats) */
-    .stats-row { flex-direction: column; }
+@keyframes blinker {
+    50% { opacity: 0; }
 }
