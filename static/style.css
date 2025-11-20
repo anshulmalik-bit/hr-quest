@@ -1,246 +1,358 @@
 /* =========================================
-   HR QUEST: ORIGINAL + GAMIFIED HYBRID THEME
+   HR QUEST: GLOBAL THEME & VARIABLES
    ========================================= */
 
 :root {
-    /* The Original Palette */
-    --bg-color: #ffffff;           /* Clean White Background */
-    --text-color: #2d3748;         /* Dark Slate text for readability */
-    --accent-teal: #00bcd4;        /* The "Teal Glow" you wanted */
-    --accent-hover: #00acc1;
-    --hero-glow: rgba(0, 188, 212, 0.4); /* Glow effect */
+    /* Landing Page Palette (Teal/Mint Gradient) */
+    --teal-gradient-start: #ccfbf1; /* Light Mint */
+    --teal-gradient-end: #a5f3fc;   /* Cyan */
+    --dark-text: #0f172a;           /* Dark Navy for text */
     
-    /* The Gamified Palette (Adapted for Light Mode) */
+    /* Game Interface Palette */
+    --accent-teal: #00bcd4;
     --gold-score: #f59e0b;
-    --xp-purple: #8b5cf6;
-    --success-green: #10b981;
-    --card-bg: #f8fafc;            /* Slightly off-white for cards */
+    --hero-glow: rgba(0, 188, 212, 0.4);
+    --game-bg: #f8fafc;             /* Clean gray/white for game area */
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
     margin: 0;
     padding: 0;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    /* Default background is the Landing Page Gradient */
+    background: linear-gradient(135deg, var(--teal-gradient-start) 0%, var(--teal-gradient-end) 100%);
+    color: var(--dark-text);
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     overflow-x: hidden;
 }
 
 /* =========================================
-   SECTION 1: THE ORIGINAL "HERO" LOOK
+   PART 1: LANDING PAGE STYLES
    ========================================= */
 
-.main-container {
+#landing-page {
     width: 100%;
-    max-width: 900px;
-    text-align: center;
-    padding: 2rem;
-    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-header h1 {
-    font-size: 3.5rem;
+/* --- Navbar --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+}
+
+.logo {
     font-weight: 800;
-    color: #1a202c;
-    letter-spacing: -1px;
-    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
 }
 
-/* The "Glitch" effect is now subtle/modern */
-.glitch-text {
+.nav-links a {
+    margin: 0 20px;
+    text-decoration: none;
+    color: #334155;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: #000;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.signup-link {
+    text-decoration: none;
+    color: var(--dark-text);
+    font-weight: 600;
+}
+
+.connect-wallet-btn {
+    background: #0f172a;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.connect-wallet-btn:hover {
+    transform: scale(1.05);
+}
+
+/* --- Hero Section --- */
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1; /* Takes up remaining vertical space */
+    padding: 0 10%;
+    gap: 60px;
+}
+
+/* Left: 3D Image Wrapper */
+.hero-image-wrapper {
+    flex: 1;
     position: relative;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.subtitle {
-    color: #718096;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 2rem;
+.circle-bg {
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    z-index: 1;
 }
 
-/* The 3D Student Image Container */
-.hero-image-container {
-    margin: 20px auto;
-    width: 300px; /* Adjust based on your actual image size */
-    height: auto;
-    filter: drop-shadow(0 10px 20px var(--hero-glow)); /* The Teal Glow */
+.hero-avatar {
+    width: 100%;
+    max-width: 420px;
+    z-index: 2;
+    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
     transition: transform 0.3s ease;
 }
 
-.hero-image-container:hover {
-    transform: translateY(-5px); /* Floating effect */
+.hero-avatar:hover {
+    transform: translateY(-10px);
+}
+
+/* Right: Text Content */
+.hero-content {
+    flex: 1;
+    text-align: left;
+}
+
+.sub-headline {
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: 500;
+    color: #1e293b;
+}
+
+.main-headline {
+    font-size: 12rem; /* Massive HR Text */
+    line-height: 0.8;
+    margin: 10px 0;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -5px;
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    color: #475569;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    max-width: 450px;
+}
+
+.cta-button {
+    background: transparent;
+    color: var(--dark-text);
+    border: 2px solid var(--dark-text);
+    padding: 15px 45px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    background: var(--dark-text);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
 /* =========================================
-   SECTION 2: UPLOAD INTERFACE
+   PART 2: GAME INTERFACE STYLES
    ========================================= */
 
-.upload-section {
+#game-container {
+    /* Switch to clean background for the actual work */
+    background-color: var(--game-bg); 
+    min-height: 100vh;
+    width: 100%;
+    display: flex; /* Flex to center content */
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    padding: 2rem;
+    margin-top: 60px; /* Spacing from top */
+}
+
+header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #1a202c;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: #64748b;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+
+/* --- Cards (Upload & Results) --- */
+.upload-section, .level-complete-card {
     background: white;
-    border-radius: 20px;
+    border-radius: 24px;
     padding: 40px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05); /* Soft shadow */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
     border: 1px solid #e2e8f0;
-    max-width: 600px;
     margin: 0 auto;
+    text-align: center;
 }
 
 .briefing-card h3 {
     color: var(--accent-teal);
-    font-weight: 700;
-    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 1px;
 }
 
+/* --- Inputs --- */
 .input-group {
-    margin-top: 2rem;
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 15px;
+    align-items: center;
 }
 
-/* Stylish File Input */
 .file-input {
-    padding: 10px;
+    padding: 20px;
     border: 2px dashed #cbd5e0;
-    border-radius: 10px;
     width: 100%;
-    background: #f7fafc;
+    max-width: 400px;
+    background: #f8fafc;
+    border-radius: 12px;
+    font-family: inherit;
     cursor: pointer;
-    transition: border-color 0.3s;
+    transition: border-color 0.2s;
 }
 
 .file-input:hover {
     border-color: var(--accent-teal);
 }
 
-/* The Teal Glow Button */
+/* --- Game Buttons --- */
 .start-btn, .next-level-btn {
     background: linear-gradient(135deg, var(--accent-teal), #0097a7);
     color: white;
-    font-size: 1.1rem;
-    font-weight: bold;
-    padding: 15px 40px;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 16px 40px;
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    box-shadow: 0 10px 20px var(--hero-glow); /* Glowing Shadow */
-    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px var(--hero-glow);
     text-transform: uppercase;
     letter-spacing: 1px;
+    transition: transform 0.2s;
 }
 
-.start-btn:hover, .next-level-btn:hover {
+.start-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 15px 30px var(--hero-glow);
 }
 
-/* Loading Text */
-.loading-text {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--accent-teal);
-    margin-top: 20px;
-}
-
-/* =========================================
-   SECTION 3: GAMIFIED RESULTS (The New Logic)
-   ========================================= */
-
-/* The Card that pops up */
-.level-complete-card {
-    background: white;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-    border-top: 5px solid var(--accent-teal);
-    max-width: 600px;
-    margin: 0 auto;
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.header-banner {
-    background: #e0f2f1;
-    color: #00695c;
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-weight: bold;
-    display: inline-block;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
-}
-
-/* Stats Grid */
+/* --- Results & Stats --- */
 .stats-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    margin-bottom: 30px;
+    margin: 30px 0;
 }
 
 .score-box, .xp-box {
     background: #f8fafc;
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 16px;
     border: 1px solid #e2e8f0;
 }
 
-.label {
-    font-size: 0.8rem;
-    color: #64748b;
-    font-weight: 600;
-    text-transform: uppercase;
+.value {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #0f172a;
+    line-height: 1;
 }
 
-.value {
-    font-size: 2.5rem;
-    font-weight: 800;
+.label {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 700;
+    text-transform: uppercase;
     margin-top: 5px;
 }
 
-/* Character Class Reveal */
 .character-reveal h3 {
+    color: var(--accent-teal);
     font-size: 1.5rem;
     margin-bottom: 20px;
-    color: #1e293b;
 }
 
-/* Boss Feedback Bubble */
 .boss-feedback {
-    background: #fffbeb; /* Light yellow warning */
-    border-left: 4px solid var(--gold-score);
-    padding: 15px;
+    background: #fffbeb;
+    padding: 20px;
+    border-left: 5px solid var(--gold-score);
     text-align: left;
-    margin-bottom: 30px;
-    color: #78350f;
+    margin: 30px 0;
     font-style: italic;
-    border-radius: 0 10px 10px 0;
+    border-radius: 0 12px 12px 0;
+    color: #78350f;
 }
 
-/* Animations */
-@keyframes slideUp {
-    from { transform: translateY(50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+/* --- Animations --- */
+.loading-text {
+    margin-top: 20px;
+    font-weight: bold;
+    color: var(--accent-teal);
+    animation: blink 1.5s infinite;
 }
 
-@keyframes blinker {
+@keyframes blink {
     50% { opacity: 0.5; }
 }
 
-.blink {
-    animation: blinker 1s linear infinite;
-}
-
-/* Mobile Responsive */
-@media (max-width: 600px) {
-    header h1 { font-size: 2.5rem; }
+/* --- Mobile Responsive --- */
+@media (max-width: 900px) {
+    .navbar { padding: 20px; }
+    .nav-links { display: none; } /* Hide links on mobile */
+    
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+        padding: 40px 20px;
+    }
+    
+    .hero-content { text-align: center; }
+    .main-headline { font-size: 6rem; }
+    .circle-bg { width: 300px; height: 300px; }
+    
     .stats-container { grid-template-columns: 1fr; }
-    .upload-section, .level-complete-card { padding: 20px; width: 90%; }
 }
