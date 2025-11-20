@@ -1,46 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR-Quest</title>
-    <link rel="stylesheet" href="/static/css/landing.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HR-Quest — Start the Game</title>
+  <link rel="stylesheet" href="/static/css/landing.css">
 </head>
-
 <body>
-
-    <!-- NAVBAR -->
-    <header class="navbar">
-        <div class="brand">HR-Quest</div>
-        <nav>
-            <a href="#">Exercises</a>
-            <a href="#">Resources</a>
-            <a href="#">Community</a>
-        </nav>
-        <button class="signin">Sign In</button>
+  <div class="page">
+    <header class="topbar">
+      <div class="logo">HR-Quest</div>
+      <nav class="nav">
+        <a href="#" class="nav-link">Exercises</a>
+        <a href="#" class="nav-link">Resources</a>
+        <a href="#" class="nav-link">Community</a>
+        <a href="#" class="nav-cta">Sign In</a>
+      </nav>
     </header>
 
-    <!-- MAIN SECTION -->
-    <section class="hero">
+    <main class="hero">
+      <div class="bg-circle c1"></div>
+      <div class="bg-circle c2"></div>
+      <div class="bg-ring"></div>
 
-        <!-- LEFT IMAGE PANEL -->
-        <div class="hero-image-box">
-            <img src="/static/images/student.png" class="hero-image">
+      <div class="giant-text" aria-hidden="true">HR</div>
+
+      <div class="hero-left">
+        <div class="portrait-wrap">
+          <img id="studentImg" src="/static/images/student.png" alt="Student portrait">
         </div>
+      </div>
 
-        <!-- RIGHT TEXT PANEL -->
-        <div class="hero-text">
-            <h1><span>Practice with Simulations</span></h1>
-            <h2>HR</h2>
-
-            <p class="subtitle">
-                The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.
-            </p>
-
-            <a href="/profile" class="cta">Start the Game →</a>
+      <div class="hero-right">
+        <h2 class="kicker">Practice with Simulations</h2>
+        <h1 class="title">HR</h1>
+        <p class="lead">The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.</p>
+        <div class="actions">
+          <button id="startGame" class="btn primary" onclick="location.href='/profile'">Start the Game</button>
         </div>
+      </div>
+    </main>
 
-    </section>
+    <footer class="footer">
+      <small>Made for classroom assessment • HR-Quest</small>
+    </footer>
+  </div>
 
+  <script src="/static/js/landing.js"></script>
 </body>
 </html>
