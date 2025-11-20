@@ -1,154 +1,85 @@
-let studentId = null;
-let atsScore = 0;
-let currentQuestion = 0;
-const questions = [
-  'Tell me about a time you led a team to meet a deadline. What did you do?',
-  'How do you handle conflict with a teammate?',
-  'Describe a project where you used analytics or data to make a decision.',
-  'How would you prioritize tasks when everything is high-priority?',
-  'Why should we hire you?'
-];
-const answers = [];
-const times = [];
-let questionStart = null;
+document.addEventListener('DOMContentLoaded', () => {
+    const resumeInput = document.getElementById('resumeInput');
+    const fileNameDisplay = document.getElementById('file-name');
+    const scanBtn = document.getElementById('start-scan-btn');
+    
+    const level1Area = document.getElementById('level-1-area');
+    const resultsArea = document.getElementById('results-area');
+    const loadingScreen = document.getElementById('loading-screen');
+    const xpDisplay = document.getElementById('player-xp');
 
-// UI helpers
-function showCard(id){
-  document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'))
-  document.getElementById(id).classList.add('active')
-  // update level badge
-  const levelMap = {home:1, profile:2, interview:3, results:4}
-  const lb = document.getElementById('levelBadge');
-  if(lb) lb.textContent = 'Level ' + (levelMap[id]||1);
-}
+    // 1. Handle File Selection
+    resumeInput.addEventListener('change', () => {
+        if (resumeInput.files.length > 0) {
+            fileNameDisplay.innerText = resumeInput.files[0].name;
+            fileNameDisplay.style.color = "#00ff88";
+            scanBtn.disabled = false; // Enable the button
+        }
+    });
 
-function setPoints(n){
-  const el = document.querySelector('#points span');
-  if(el) el.textContent = n;
-}
+    // 2. Handle Scan Button Click
+    scanBtn.addEventListener('click', async () => {
+        // UI Transition: Show Loading
+        level1Area.classList.add('hidden');
+        loadingScreen.classList.remove('hidden');
 
-// start
-document.getElementById('startBtn').addEventListener('click', ()=> showCard('profile'))
-document.getElementById('howBtn').addEventListener('click', ()=>{
-  const h = document.getElementById('howBox');
-  h.style.display = (h.style.display==='none')? 'block' : 'none';
-})
+        const formData = new FormData();
+        formData.append('resume', resumeInput.files[0]);
 
-// profile upload
-document.getElementById('profileForm').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const resume = document.getElementById('resume').files[0];
-  if(!name || !resume){alert('Name and resume required');return}
-  const form = new FormData();
-  form.append('name', name);
-  form.append('email', email);
-  form.append('resume', resume);
+        try {
+            // Send to Backend
+            const response = await fetch('/api/level1/scan', {
+                method: 'POST',
+                body: formData
+            });
 
-  try{
-    const res = await fetch('/upload', {method:'POST', body: form});
-    const data = await res.json();
-    if(res.status !== 200){ alert(data.error || 'Upload failed'); return }
-    studentId = data.student_id;
-    atsScore = data.ats_score || 0;
-    setPoints(Math.round(atsScore*0.25));
-    const ar = document.getElementById('atsResult');
-    if(ar){ ar.style.display = 'inline-block'; ar.textContent = `ATS Score: ${atsScore} — Points: ${Math.round(atsScore*0.25)}`; }
-    // unlock next level
-    setTimeout(()=> { showCard('interview'); startQuestion(0); }, 700);
-  } catch(err){
-    console.error('Upload failed', err);
-    alert('Upload failed — check console')
-  }
-});
+            const data = await response.json();
 
-function startQuestion(i){
-  currentQuestion = i;
-  answers.length = 0; times.length = 0;
-  showQuestion(i);
-}
+            if (response.ok) {
+                showResults(data);
+            } else {
+                alert("Error: " + data.error);
+                location.reload();
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Server connection failed.");
+            location.reload();
+        }
+    });
 
-function showQuestion(i){
-  const qa = document.getElementById('questionArea');
-  if(!qa) return;
-  qa.innerHTML = `
-    <div class="qcard">
-      <h4>Question ${i+1} of ${questions.length}</h4>
-      <p>${questions[i]}</p>
-      <textarea id="ansbox" rows="6" placeholder="Type your answer here (min 4 words)"></textarea>
-    </div>`;
-  questionStart = Date.now();
-}
+    // 3. Display the Gamified Results
+    function showResults(data) {
+        loadingScreen.classList.add('hidden');
+        resultsArea.classList.remove('hidden');
 
-document.getElementById('nextQBtn').addEventListener('click', ()=>{
-  const box = document.getElementById('ansbox');
-  if(!box) return;
-  // require minimum words
-  const words = (box.value.trim().split(/\s+/).filter(Boolean)).length;
-  if(words < 4){ alert('Please write at least 4 words before moving on.'); return }
-  answers.push(box.value || '');
-  const elapsed = Math.round((Date.now() - questionStart)/1000);
-  times.push(elapsed);
-  const next = currentQuestion + 1;
-  if(next < questions.length){
-    showQuestion(next);
-    currentQuestion = next;
-  } else {
-    alert('All questions done — click Submit Answers')
-  }
-});
+        // Update XP in Header
+        xpDisplay.innerText = `XP: ${data.xp_gained}`;
 
-document.getElementById('submitAnswersBtn').addEventListener('click', async ()=>{
-  const box = document.getElementById('ansbox');
-  if(box) { answers.push(box.value || ''); times.push(Math.round((Date.now()-questionStart)/1000)); }
-  const payload = { student_id: studentId, answers: answers, times: times };
-  const res = await fetch('/submit-answers', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
-  const data = await res.json();
-  if(res.status !== 200){ alert(data.error || 'Submit failed'); return }
-  // compute total points locally too
-  const totalPts = data.total_score || 0;
-  setPoints(totalPts);
-  showCard('results');
-  const sc = document.getElementById('scoreCard');
-  if(sc){
-    sc.innerHTML = `
-    <p>Name: <strong>${document.getElementById('name').value}</strong></p>
-    <p>ATS Score: ${atsScore}</p>
-    <p>Grammar Score: ${data.grammar_score}</p>
-    <p>Answers Score: ${data.answer_score}</p>
-    <h3>Total Score: ${data.total_score}/100</h3>
-    <p>Badges: ${data.badges.join(', ') || 'None'}</p>
-  `;
-  }
-});
+        // Inject HTML
+        resultsArea.innerHTML = `
+            <div class="quest-card">
+                <h2>LEVEL COMPLETE!</h2>
+                
+                <div class="score-circle">
+                    ${data.ats_score}
+                </div>
+                
+                <div class="archetype">Class: ${data.class_archetype}</div>
+                
+                <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 15px;">
+                    ${data.strengths.map(s => `<span style="background:#333; padding:5px 10px; border-radius:4px; font-size:0.8rem;">💪 ${s}</span>`).join('')}
+                </div>
 
-// restart logic
-document.getElementById('restartBtn').addEventListener('click', () => {
-  studentId = null;
-  atsScore = 0;
-  currentQuestion = 0;
-  answers.length = 0;
-  times.length = 0;
-  const nameEl = document.getElementById('name');
-  const emailEl = document.getElementById('email');
-  const resumeEl = document.getElementById('resume');
-  if(nameEl) nameEl.value = '';
-  if(emailEl) emailEl.value = '';
-  if(resumeEl) resumeEl.value = '';
-  const ar = document.getElementById('atsResult');
-  if(ar) ar.style.display = 'none';
-  setPoints(0);
-  showCard('home');
-});
+                <div class="boss-box">
+                    <strong>HR Boss says:</strong><br>
+                    "${data.boss_feedback}"
+                </div>
 
-// small UX: allow pressing Enter to move to next question (CTRL+Enter to submit)
-document.addEventListener('keydown', (e)=>{
-  if(e.key === 'Enter' && !e.shiftKey){
-    const active = document.querySelector('.card.active');
-    if(active && active.id === 'interview'){
-      e.preventDefault();
-      document.getElementById('nextQBtn').click();
+                <button onclick="location.reload()" class="action-btn" style="margin-top:20px;">
+                    🔄 Try Again (Grind XP)
+                </button>
+            </div>
+        `;
     }
-  }
 });
