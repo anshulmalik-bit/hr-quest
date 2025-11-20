@@ -1,67 +1,65 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>HRQuest — Start the Game</title>
-  <link rel="stylesheet" href="/static/css/landing.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRQuest — Start the Game</title>
+    
+    <link rel="stylesheet" href="/static/style.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="brand-left">HRQuest</div>
-      <nav class="header-nav" aria-label="Main">
-        <a class="nav-link" href="#">Exercises</a>
-        <a class="nav-link" href="#">Resources</a>
-        <a class="nav-link" href="#">Community</a>
-        <a class="nav-link" href="#">FAQ</a>
-      </nav>
-      <div class="header-right"></div>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <main class="hero">
-    <div class="hero-background"></div>
-
-    <!-- decorative background -->
-    <div class="giant-text" aria-hidden="true">HR</div>
-
-    <!-- portrait glow and sparkles -->
-    <div class="portrait-glow"></div>
-    <div class="portrait-spark1"></div>
-    <div class="portrait-spark2"></div>
-
-    <div class="hero-inner">
-
-      <!-- LEFT IMAGE -->
-      <section class="hero-left" aria-hidden="true">
-        <div class="portrait-wrap">
-          <img id="studentImg" src="/static/images/student.png" alt="Student portrait">
+    <nav class="navbar">
+        <div class="logo">HRQuest</div>
+        <div class="nav-links">
+            <a href="#how-it-works">How it Works</a>
+            <a href="#exercises">Exercises</a>
+            <a href="#community">Community</a>
+            <a href="#faq">FAQ</a>
         </div>
-      </section>
+    </nav>
 
-      <!-- RIGHT TEXT -->
-      <section class="hero-right">
-        <h2 class="kicker">Practice with Simulations</h2>
-        <p class="lead">
-          The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.
-        </p>
-
-        <div class="cta-row">
-          <button class="btn-cta" onclick="location.href='/profile'">
-            Get Started <span class="arrow">→</span>
-          </button>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Practice with <br><span class="highlight">Simulations</span></h1>
+            <p>The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.</p>
+            
+            <a href="#how-it-works" class="cta-button">
+                Get Started <span class="arrow">→</span>
+            </a>
         </div>
-      </section>
 
-    </div>
-  </main>
+        <div class="hero-image">
+            <img src="/static/images/student.png" alt="Student Portrait">
+        </div>
+    </header>
 
-  <!-- FOOTER REMOVED -->
+    <section id="how-it-works" class="features-section">
+        <h2>How to Play the Game</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon">1</div>
+                <h3>Choose Your Role</h3>
+                <p>Select a scenario based on the job level you want to practice for.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">2</div>
+                <h3>Face the AI</h3>
+                <p>Interact with realistic AI candidates in a safe, simulated environment.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">3</div>
+                <h3>Level Up</h3>
+                <p>Get instant feedback on your empathy and decision making.</p>
+            </div>
+        </div>
+    </section>
 
-  <script src="/static/js/landing.js"></script>
+    <footer class="footer">
+        <p>&copy; 2024 HRQuest. All rights reserved.</p>
+    </footer>
+
 </body>
 </html>
