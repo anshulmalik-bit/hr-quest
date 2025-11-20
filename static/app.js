@@ -1,85 +1,109 @@
+// Wait for the DOM to load
 document.addEventListener('DOMContentLoaded', () => {
-    const resumeInput = document.getElementById('resumeInput');
-    const fileNameDisplay = document.getElementById('file-name');
-    const scanBtn = document.getElementById('start-scan-btn');
-    
-    const level1Area = document.getElementById('level-1-area');
-    const resultsArea = document.getElementById('results-area');
-    const loadingScreen = document.getElementById('loading-screen');
-    const xpDisplay = document.getElementById('player-xp');
-
-    // 1. Handle File Selection
-    resumeInput.addEventListener('change', () => {
-        if (resumeInput.files.length > 0) {
-            fileNameDisplay.innerText = resumeInput.files[0].name;
-            fileNameDisplay.style.color = "#00ff88";
-            scanBtn.disabled = false; // Enable the button
-        }
-    });
-
-    // 2. Handle Scan Button Click
-    scanBtn.addEventListener('click', async () => {
-        // UI Transition: Show Loading
-        level1Area.classList.add('hidden');
-        loadingScreen.classList.remove('hidden');
-
-        const formData = new FormData();
-        formData.append('resume', resumeInput.files[0]);
-
-        try {
-            // Send to Backend
-            const response = await fetch('/api/level1/scan', {
-                method: 'POST',
-                body: formData
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                showResults(data);
-            } else {
-                alert("Error: " + data.error);
-                location.reload();
-            }
-        } catch (err) {
-            console.error(err);
-            alert("Server connection failed.");
-            location.reload();
-        }
-    });
-
-    // 3. Display the Gamified Results
-    function showResults(data) {
-        loadingScreen.classList.add('hidden');
-        resultsArea.classList.remove('hidden');
-
-        // Update XP in Header
-        xpDisplay.innerText = `XP: ${data.xp_gained}`;
-
-        // Inject HTML
-        resultsArea.innerHTML = `
-            <div class="quest-card">
-                <h2>LEVEL COMPLETE!</h2>
-                
-                <div class="score-circle">
-                    ${data.ats_score}
-                </div>
-                
-                <div class="archetype">Class: ${data.class_archetype}</div>
-                
-                <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 15px;">
-                    ${data.strengths.map(s => `<span style="background:#333; padding:5px 10px; border-radius:4px; font-size:0.8rem;">💪 ${s}</span>`).join('')}
-                </div>
-
-                <div class="boss-box">
-                    <strong>HR Boss says:</strong><br>
-                    "${data.boss_feedback}"
-                </div>
-
-                <button onclick="location.reload()" class="action-btn" style="margin-top:20px;">
-                    🔄 Try Again (Grind XP)
-                </button>
-            </div>
-        `;
-    }
+    console.log("HR Quest System Online 🟢");
 });
+
+async function uploadResume() {
+    // 1. Get the file from the input
+    const fileInput = document.getElementById('resumeInput');
+    const file = fileInput.files[0];
+
+    // 2. Input Validation
+    if (!file) {
+        alert("⚠️ No Armor Equipped! Please select a PDF file.");
+        return;
+    }
+
+    // 3. Prepare the data for Python
+    const formData = new FormData();
+    formData.append('resume', file); // This key 'resume' matches request.files['resume'] in Flask
+
+    // 4. Show Loading State (Gamified)
+    const statusDiv = document.getElementById('game-status');
+    const resultArea = document.getElementById('result-area');
+    
+    statusDiv.innerHTML = `
+        <div class="loading-text">
+            <span class="blink">⚔️ ANALYZING ARMOR STATS...</span>
+        </div>
+    `;
+    statusDiv.style.color = "#ffd700"; // Gold color
+
+    try {
+        // 5. Send to Backend (FIXED URL HERE)
+        const response = await fetch('/api/scan_resume', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        // 6. Handle Success
+        if (response.ok) {
+            statusDiv.innerHTML = ""; // Clear loading text
+            
+            // Hide the upload form to reduce clutter
+            document.querySelector('.upload-section').style.display = 'none';
+
+            // Inject the Gamified Result Card
+            resultArea.innerHTML = `
+                <div class="level-complete-card" style="animation: slideUp 0.5s ease;">
+                    <div class="header-banner">LEVEL 1 COMPLETE</div>
+                    
+                    <div class="stats-container">
+                        <div class="score-box">
+                            <div class="label">ATS SCORE</div>
+                            <div class="value" style="color: ${getScoreColor(data.ats_score)}">
+                                ${data.ats_score}/100
+                            </div>
+                        </div>
+                        
+                        <div class="xp-box">
+                            <div class="label">XP GAINED</div>
+                            <div class="value">+${data.xp_earned} XP</div>
+                        </div>
+                    </div>
+
+                    <div class="character-reveal">
+                        <h3>🔓 Class Unlocked: <span style="color: #00ff00">${data.character_class}</span></h3>
+                    </div>
+
+                    <div class="boss-feedback">
+                        <p><strong>HR BOSS SAYS:</strong></p>
+                        <p>"${data.feedback}"</p>
+                    </div>
+
+                    <button class="next-level-btn" onclick="startLevel2()">
+                        ENTER LEVEL 2: THE INTERVIEW ➡️
+                    </button>
+                </div>
+            `;
+            
+            // Optional: Play a success sound here if you have one
+            // new Audio('/static/sounds/levelup.mp3').play();
+
+        } else {
+            // Handle Server Errors (e.g., PDF corrupted)
+            statusDiv.innerHTML = `❌ SYSTEM ERROR: ${data.error}`;
+            statusDiv.style.color = "red";
+        }
+
+    } catch (error) {
+        // Handle Network Errors
+        console.error('Error:', error);
+        statusDiv.innerHTML = "❌ CONNECTION LOST. Check server logs.";
+        statusDiv.style.color = "red";
+    }
+}
+
+// Helper function to color-code the score
+function getScoreColor(score) {
+    if (score >= 80) return "#00ff00"; // Green (High)
+    if (score >= 50) return "#ffd700"; // Gold (Mid)
+    return "#ff4444"; // Red (Low)
+}
+
+function startLevel2() {
+    alert("Level 2 (The Interview) is under construction! 🚧");
+    // logic to redirect or show the chat interface would go here
+}
