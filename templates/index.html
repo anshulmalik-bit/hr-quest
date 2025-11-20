@@ -7,33 +7,39 @@
   <link rel="stylesheet" href="/static/css/landing.css">
 </head>
 <body>
-  <div class="page">
+  <div class="page-wrap">
     <header class="topbar">
-      <div class="logo">HR-Quest</div>
+      <div class="logo">Digitally</div>
       <nav class="nav">
-        <a href="#" class="nav-link">Exercises</a>
-        <a href="#" class="nav-link">Resources</a>
-        <a href="#" class="nav-link">Community</a>
-        <a href="#" class="nav-cta">Sign In</a>
+        <a class="nav-link">Exercises</a>
+        <a class="nav-link">Resources</a>
+        <a class="nav-link">Community</a>
+        <a class="nav-cta">Sign Up</a>
       </nav>
     </header>
 
-    <main class="hero">
-      <div class="bg-circle c1"></div>
-      <div class="bg-circle c2"></div>
-      <div class="bg-ring"></div>
+    <main class="hero-card">
+      <!-- decorative background circles -->
+      <div class="bg-decor c-fade"></div>
+      <div class="bg-decor circle-left"></div>
+      <div class="bg-decor circle-right"></div>
 
+      <!-- large behind text -->
       <div class="giant-text" aria-hidden="true">HR</div>
 
+      <!-- left: portrait -->
       <div class="hero-left">
-        <div class="portrait-wrap">
+        <div class="portrait-card">
+          <!-- use student.png inside static/images; image must be exactly the approved art -->
           <img id="studentImg" src="/static/images/student.png" alt="Student portrait">
         </div>
       </div>
 
+      <!-- right: content -->
       <div class="hero-right">
         <h2 class="kicker">Practice with Simulations</h2>
-        <h1 class="title">HR</h1>
+        <!-- hidden semantic title, visual handled by giant-text -->
+        <h1 class="sr-only">HR</h1>
         <p class="lead">The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.</p>
         <div class="actions">
           <button id="startGame" class="btn primary" onclick="location.href='/profile'">Start the Game</button>
@@ -41,7 +47,7 @@
       </div>
     </main>
 
-    <footer class="footer">
+    <footer class="site-foot">
       <small>Made for classroom assessment • HR-Quest</small>
     </footer>
   </div>
