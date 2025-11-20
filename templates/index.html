@@ -9,36 +9,43 @@
 <body>
   <div class="page-wrap">
     <header class="topbar">
-      <div class="logo">Digitally</div>
-      <nav class="nav">
-        <a class="nav-link">Exercises</a>
-        <a class="nav-link">Resources</a>
-        <a class="nav-link">Community</a>
-        <a class="nav-cta">Sign Up</a>
+      <div class="top-left">
+        <div class="logo">Digitally</div>
+      </div>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="nav-link" href="#">Exercises</a>
+        <a class="nav-link" href="#">Resources</a>
+        <a class="nav-link" href="#">Community</a>
+        <a class="nav-link" href="#">FAQ</a>
       </nav>
+
+      <div class="top-right">
+        <!-- This is the requested change: right corner shows HRQuest -->
+        <div class="brand-right">HRQuest</div>
+      </div>
     </header>
 
-    <main class="hero-card">
+    <main class="hero-card" role="main" aria-labelledby="hero-heading">
       <!-- decorative background circles -->
-      <div class="bg-decor c-fade"></div>
-      <div class="bg-decor circle-left"></div>
-      <div class="bg-decor circle-right"></div>
+      <div class="bg-decor c-fade" aria-hidden="true"></div>
+      <div class="bg-decor circle-left" aria-hidden="true"></div>
+      <div class="bg-decor circle-right" aria-hidden="true"></div>
 
       <!-- large behind text -->
       <div class="giant-text" aria-hidden="true">HR</div>
 
       <!-- left: portrait -->
       <div class="hero-left">
-        <div class="portrait-card">
-          <!-- use student.png inside static/images; image must be exactly the approved art -->
-          <img id="studentImg" src="/static/images/student.png" alt="Student portrait">
+        <div class="portrait-card" aria-hidden="true">
+          <!-- using the approved uploaded image path -->
+          <img id="studentImg" src="/mnt/data/A_2D_digital_illustration_landing_page_design_for_.png" alt="Student portrait">
         </div>
       </div>
 
       <!-- right: content -->
       <div class="hero-right">
-        <h2 class="kicker">Practice with Simulations</h2>
-        <!-- hidden semantic title, visual handled by giant-text -->
+        <h2 id="hero-heading" class="kicker">Practice with Simulations</h2>
         <h1 class="sr-only">HR</h1>
         <p class="lead">The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.</p>
         <div class="actions">
