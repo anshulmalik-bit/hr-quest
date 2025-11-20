@@ -4,38 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HR Quest | The Simulation</title>
-    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div class="main-container">
         <header>
             <h1 class="glitch-text">HR QUEST_</h1>
-            <p class="subtitle">LEVEL 1: THE GATEKEEPER</p>
+            <p id="level-title" class="subtitle">LEVEL 1: THE GATEKEEPER</p>
         </header>
 
-        <div class="game-interface">
-            
+        <!-- LEVEL 1: RESUME UPLOAD -->
+        <div id="level1-section" class="game-interface">
             <div class="upload-section">
                 <div class="briefing-card">
                     <h3>MISSION BRIEFING</h3>
-                    <p>To enter the corporate fortress, you must pass the ATS Scanners. Upload your Resume dossier to proceed.</p>
+                    <p>To enter the corporate fortress, you must pass the ATS Scanners. Upload your Resume to proceed.</p>
                 </div>
-
                 <div class="input-group">
                     <input type="file" id="resumeInput" accept=".pdf" class="file-input">
                     <button onclick="uploadResume()" class="start-btn">INITIATE SCAN</button>
                 </div>
+                <div id="game-status" class="loading-text"></div>
             </div>
-
-            <div id="game-status" class="status-text"></div>
-
-            <div id="result-area"></div>
-            
         </div>
+
+        <!-- RESULT AREA (Shared) -->
+        <div id="result-area"></div>
+
+        <!-- LEVEL 2: SITUATIONAL JUDGMENT (Hidden by default) -->
+        <div id="level2-section" class="game-interface" style="display: none;">
+            <div class="upload-section">
+                <div class="briefing-card">
+                    <h3 id="l2-scenario-title">SCENARIO LOADING...</h3>
+                    <p id="l2-scenario-text">...</p>
+                </div>
+                <div class="input-group">
+                    <textarea id="l2-answer" rows="5" class="file-input" placeholder="Type your response here..."></textarea>
+                    <input type="hidden" id="l2-question-id">
+                    <button onclick="submitLevel2()" class="start-btn">SUBMIT RESPONSE</button>
+                </div>
+                <div id="l2-status" class="loading-text"></div>
+            </div>
+        </div>
+
     </div>
 
     <script src="{{ url_for('static', filename='app.js') }}"></script>
