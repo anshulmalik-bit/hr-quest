@@ -4,52 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HR Quest | The Simulation</title>
+    <!-- Link to the CSS file -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Font for the design -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="main-container">
-        <header>
-            <h1 class="glitch-text">HR QUEST_</h1>
-            <p id="level-title" class="subtitle">LEVEL 1: THE GATEKEEPER</p>
-        </header>
+    <!-- ==================== 
+         PART 1: LANDING PAGE 
+         (Matches your 'Digitally' reference image)
+         ==================== -->
+    <div id="landing-page">
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <div class="logo">HR Quest</div>
+            <div class="nav-links">
+                <a href="#">Exercises</a>
+                <a href="#">Resources</a>
+                <a href="#">Community</a>
+                <a href="#">FAQ</a>
+            </div>
+            <div class="nav-actions">
+                <a href="#" class="signup-link">Sign Up</a>
+                <button class="connect-wallet-btn">Connect Wallet</button>
+            </div>
+        </nav>
 
-        <!-- LEVEL 1: RESUME UPLOAD -->
-        <div id="level1-section" class="game-interface">
-            <div class="upload-section">
-                <div class="briefing-card">
-                    <h3>MISSION BRIEFING</h3>
-                    <p>To enter the corporate fortress, you must pass the ATS Scanners. Upload your Resume to proceed.</p>
-                </div>
-                <div class="input-group">
-                    <input type="file" id="resumeInput" accept=".pdf" class="file-input">
-                    <button onclick="uploadResume()" class="start-btn">INITIATE SCAN</button>
-                </div>
-                <div id="game-status" class="loading-text"></div>
+        <!-- Hero Section (Big Text + 3D Image) -->
+        <div class="hero-section">
+            <!-- Left Side: 3D Character -->
+            <div class="hero-image-wrapper">
+                <div class="circle-bg"></div>
+                <!-- 3D Student Avatar -->
+                <img src="https://cdn3d.iconscout.com/3d/premium/thumb/female-student-holding-books-2974934-2477365.png" alt="3D Student" class="hero-avatar">
+            </div>
+
+            <!-- Right Side: Text Content -->
+            <div class="hero-content">
+                <p class="sub-headline">Practice with Simulations</p>
+                <h1 class="main-headline">HR</h1>
+                <p class="hero-description">
+                    The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.
+                </p>
+                <button class="cta-button" onclick="enterGame()">Start the Game</button>
             </div>
         </div>
-
-        <!-- RESULT AREA (Shared) -->
-        <div id="result-area"></div>
-
-        <!-- LEVEL 2: SITUATIONAL JUDGMENT (Hidden by default) -->
-        <div id="level2-section" class="game-interface" style="display: none;">
-            <div class="upload-section">
-                <div class="briefing-card">
-                    <h3 id="l2-scenario-title">SCENARIO LOADING...</h3>
-                    <p id="l2-scenario-text">...</p>
-                </div>
-                <div class="input-group">
-                    <textarea id="l2-answer" rows="5" class="file-input" placeholder="Type your response here..."></textarea>
-                    <input type="hidden" id="l2-question-id">
-                    <button onclick="submitLevel2()" class="start-btn">SUBMIT RESPONSE</button>
-                </div>
-                <div id="l2-status" class="loading-text"></div>
-            </div>
-        </div>
-
     </div>
 
+    <!-- ==================== 
+         PART 2: THE GAME INTERFACE 
+         (Hidden until 'Start the Game' is clicked)
+         ==================== -->
+    <div id="game-container" style="display: none;">
+        
+        <div class="main-container">
+            <header>
+                <h1 class="glitch-text">HR QUEST_</h1>
+                <p id="level-title" class="subtitle">LEVEL 1: THE GATEKEEPER</p>
+            </header>
+
+            <!-- LEVEL 1: RESUME UPLOAD -->
+            <div id="level1-section" class="game-interface">
+                <div class="upload-section">
+                    <div class="briefing-card">
+                        <h3>MISSION BRIEFING</h3>
+                        <p>To enter the corporate fortress, you must pass the ATS Scanners. Upload your Resume (PDF) to proceed.</p>
+                    </div>
+                    <div class="input-group">
+                        <input type="file" id="resumeInput" accept=".pdf" class="file-input">
+                        <button onclick="uploadResume()" class="start-btn">INITIATE SCAN</button>
+                    </div>
+                    <div id="game-status" class="loading-text"></div>
+                </div>
+            </div>
+
+            <!-- RESULT AREA (Where the score card appears) -->
+            <div id="result-area"></div>
+
+            <!-- LEVEL 2: SITUATIONAL JUDGMENT (Hidden by default) -->
+            <div id="level2-section" class="game-interface" style="display: none;">
+                <div class="upload-section">
+                    <div class="briefing-card">
+                        <h3 id="l2-scenario-title">SCENARIO LOADING...</h3>
+                        <p id="l2-scenario-text">...</p>
+                    </div>
+                    <div class="input-group">
+                        <textarea id="l2-answer" rows="5" class="file-input" placeholder="Type your response here..."></textarea>
+                        <input type="hidden" id="l2-question-id">
+                        <button onclick="submitLevel2()" class="start-btn">SUBMIT RESPONSE</button>
+                    </div>
+                    <div id="l2-status" class="loading-text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to the JavaScript file -->
     <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
