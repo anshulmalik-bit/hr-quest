@@ -6,52 +6,68 @@
     <title>HRQuest — Start the Game</title>
     
     <link rel="stylesheet" href="/static/style.css">
-    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="background-gradient"></div>
+    <div class="background-blur"></div>
 
-    <nav class="navbar-dark">
-        <div class="logo-dark">HRQuest</div>
-        <div class="nav-links-dark">
-            <a href="#how-it-works">Marketplace</a> <a href="#exercises">Resources</a>
+    <nav class="navbar">
+        <div class="logo">HRQuest</div>
+        <div class="nav-links">
+            <a href="#how-it-works">Marketplace</a>
+            <a href="#exercises">Resources</a>
             <a href="#community">Community</a>
             <a href="#faq">FAQ</a>
         </div>
         <div class="nav-actions">
-            <a href="#" class="nav-button signup-button">Sign Up</a>
-            <a href="#" class="nav-button connect-button">Connect Wallet</a> </div>
+            <a href="#" class="nav-button login-button">Log In</a>
+            <a href="#" class="nav-button primary-button">Sign Up</a>
+        </div>
     </nav>
 
-    <header class="hero-dark">
+    <header class="hero">
         <div class="hero-left">
             <div class="main-title">
                 <span class="small-text">Hone Your Skills</span>
-                <span class="large-text">HRQUEST</span>
+                <span class="large-text">HR<br>QUEST</span>
             </div>
-            <p class="hero-description">The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.</p>
-            <a href="#" class="discover-button">Discover Now &rarr;</a>
+            <p class="hero-description">The ultimate platform to master HR interview skills with interactive simulations.</p>
+            
+            <div class="button-group">
+                <a href="#" class="cta-button">Start Exploring</a>
+                <a href="#" class="secondary-button">Learn More</a>
+            </div>
         </div>
 
         <div class="hero-center-image">
-            <div class="image-container">
+            <div class="image-card">
                 <img src="/static/images/student.png" alt="HRQuest Student" class="student-image">
-                <div class="glow-effect"></div>
+            </div>
+            <div class="floating-badge">
+                <span class="badge-icon">⚡</span>
+                <span class="badge-text">AI Powered</span>
             </div>
         </div>
 
         <div class="hero-right">
-            <div class="tagline">Discover, Collect & Sell</div> <div class="social-proof">
-                <div class="proof-item">
-                    <img src="/static/images/10k_creators.png" alt="10k+ Creators" style="width: 120px; height: auto;">
-                </div>
+            <div class="stat-box">
+                <span class="stat-number">10k+</span>
+                <span class="stat-label">Active Users</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">500+</span>
+                <span class="stat-label">Simulations</span>
+            </div>
+            
+            <div class="scrolldown">
+                <span>Scroll Down</span>
+                <div class="line"></div>
             </div>
         </div>
     </header>
 
-    <footer class="footer-dark">
+    <footer class="footer">
         <p>&copy; 2024 HRQuest. All rights reserved.</p>
     </footer>
 
