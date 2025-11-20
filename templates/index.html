@@ -3,48 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Quest: The Simulation</title>
+    <title>HR Quest | The Simulation</title>
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div class="main-container">
-        <header class="game-hud">
-            <div class="logo">HR QUEST <span class="beta-tag">BETA</span></div>
-            <div class="player-status">
-                <span id="player-xp">XP: 0</span>
-            </div>
+        <header>
+            <h1 class="glitch-text">HR QUEST_</h1>
+            <p class="subtitle">LEVEL 1: THE GATEKEEPER</p>
         </header>
 
-        <section id="level-1-area" class="game-stage active">
-            <div class="quest-card">
-                <h1>Level 1: The Gatekeeper</h1>
-                <p class="quest-desc">To enter the corporate dungeon, you must pass the ATS Scanner. Equip your resume to begin.</p>
-                
-                <div class="drop-zone">
-                    <input type="file" id="resumeInput" accept=".pdf" hidden>
-                    <label for="resumeInput" class="upload-btn">
-                        📁 Equip Resume (PDF)
-                    </label>
-                    <span id="file-name">No item selected</span>
+        <div class="game-interface">
+            
+            <div class="upload-section">
+                <div class="briefing-card">
+                    <h3>MISSION BRIEFING</h3>
+                    <p>To enter the corporate fortress, you must pass the ATS Scanners. Upload your Resume dossier to proceed.</p>
                 </div>
 
-                <button id="start-scan-btn" class="action-btn" disabled>
-                    ⚔️ Start Scan
-                </button>
+                <div class="input-group">
+                    <input type="file" id="resumeInput" accept=".pdf" class="file-input">
+                    <button onclick="uploadResume()" class="start-btn">INITIATE SCAN</button>
+                </div>
             </div>
-        </section>
 
-        <div id="loading-screen" class="hidden">
-            <div class="loader">
-                <div class="scanner-line"></div>
-            </div>
-            <p>Analyzing Armor Stats...</p>
+            <div id="game-status" class="status-text"></div>
+
+            <div id="result-area"></div>
+            
         </div>
-
-        <section id="results-area" class="game-stage hidden">
-            </section>
-
     </div>
 
     <script src="{{ url_for('static', filename='app.js') }}"></script>
