@@ -3,61 +3,52 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>HR-Quest — Start the Game</title>
+  <title>HRQuest — Start the Game</title>
   <link rel="stylesheet" href="/static/css/landing.css">
 </head>
 <body>
-  <div class="page-wrap">
-    <header class="topbar">
-      <div class="top-left">
-        <div class="logo">Digitally</div>
-      </div>
-
-      <nav class="nav" aria-label="Primary">
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-left">HRQuest</div>
+      <nav class="header-nav" aria-label="Main">
         <a class="nav-link" href="#">Exercises</a>
         <a class="nav-link" href="#">Resources</a>
         <a class="nav-link" href="#">Community</a>
         <a class="nav-link" href="#">FAQ</a>
       </nav>
+      <div class="header-empty"></div>
+    </div>
+  </header>
 
-      <div class="top-right">
-        <!-- This is the requested change: right corner shows HRQuest -->
-        <div class="brand-right">HRQuest</div>
-      </div>
-    </header>
+  <main class="hero">
+    <div class="hero-background"></div>
 
-    <main class="hero-card" role="main" aria-labelledby="hero-heading">
-      <!-- decorative background circles -->
-      <div class="bg-decor c-fade" aria-hidden="true"></div>
-      <div class="bg-decor circle-left" aria-hidden="true"></div>
-      <div class="bg-decor circle-right" aria-hidden="true"></div>
+    <!-- giant behind text -->
+    <div class="giant-text" aria-hidden="true">HR</div>
 
-      <!-- large behind text -->
-      <div class="giant-text" aria-hidden="true">HR</div>
-
-      <!-- left: portrait -->
-      <div class="hero-left">
-        <div class="portrait-card" aria-hidden="true">
-          <!-- using the approved uploaded image path -->
-          <img id="studentImg" src="/mnt/data/A_2D_digital_illustration_landing_page_design_for_.png" alt="Student portrait">
+    <div class="hero-inner">
+      <section class="hero-left" aria-hidden="true">
+        <div class="portrait-wrap">
+          <!-- LOCAL PATH (from our session). If you want the repo copy, change src to /static/images/student.png -->
+          <img id="studentImg" src="/mnt/data/student.png" alt="Student portrait">
         </div>
-      </div>
+      </section>
 
-      <!-- right: content -->
-      <div class="hero-right">
-        <h2 id="hero-heading" class="kicker">Practice with Simulations</h2>
-        <h1 class="sr-only">HR</h1>
+      <section class="hero-right" role="region" aria-labelledby="hero-h">
+        <h2 id="hero-h" class="kicker">Practice with Simulations</h2>
         <p class="lead">The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.</p>
-        <div class="actions">
-          <button id="startGame" class="btn primary" onclick="location.href='/profile'">Start the Game</button>
+        <div class="cta-row">
+          <button class="btn-cta" onclick="location.href='/profile'">
+            Get Started <span class="arrow">→</span>
+          </button>
         </div>
-      </div>
-    </main>
+      </section>
+    </div>
+  </main>
 
-    <footer class="site-foot">
-      <small>Made for classroom assessment • HR-Quest</small>
-    </footer>
-  </div>
+  <footer class="site-footer">
+    <small>Made for classroom assessment • HRQuest</small>
+  </footer>
 
   <script src="/static/js/landing.js"></script>
 </body>
