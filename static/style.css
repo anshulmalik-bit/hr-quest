@@ -1,160 +1,246 @@
-* RESET & FONTS */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* =========================================
+   HR QUEST: ORIGINAL + GAMIFIED HYBRID THEME
+   ========================================= */
+
+:root {
+    /* The Original Palette */
+    --bg-color: #ffffff;           /* Clean White Background */
+    --text-color: #2d3748;         /* Dark Slate text for readability */
+    --accent-teal: #00bcd4;        /* The "Teal Glow" you wanted */
+    --accent-hover: #00acc1;
+    --hero-glow: rgba(0, 188, 212, 0.4); /* Glow effect */
+    
+    /* The Gamified Palette (Adapted for Light Mode) */
+    --gold-score: #f59e0b;
+    --xp-purple: #8b5cf6;
+    --success-green: #10b981;
+    --card-bg: #f8fafc;            /* Slightly off-white for cards */
+}
 
 body {
-    background-color: #0f0f13;
-    color: #e0e0e0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* CHANGED: Use min-height instead of height to allow scrolling on phones */
-    min-height: 100vh; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 10px; /* Add padding so edges don't touch screen on mobile */
-}
-
-/* GAME CONTAINER */
-.main-container {
-    width: 100%;
-    max-width: 600px; /* Keeps it looking nice on Desktop */
-    background: #1a1a24;
-    border: 1px solid #333;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    /* ADDED: specific mobile handling */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-}
-
-/* HUD */
-.game-hud {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid #333;
-    padding-bottom: 10px;
-}
-.logo { 
-    font-weight: 900; 
-    font-size: 1.2rem; 
-    letter-spacing: 2px; 
-    color: #fff; 
-}
-.beta-tag { 
-    font-size: 0.7rem; 
-    background: #ff0055; 
-    padding: 2px 6px; 
-    border-radius: 4px; 
-    vertical-align: middle;
-    margin-left: 5px;
-}
-#player-xp { color: #00ff88; font-weight: bold; font-family: monospace; }
-
-/* CARD STYLES */
-.quest-card { text-align: center; width: 100%; }
-h1 { color: #fff; margin-bottom: 10px; font-size: 1.8rem; } /* Slightly smaller default */
-.quest-desc { color: #888; margin-bottom: 2rem; line-height: 1.5; }
-
-/* UPLOAD BUTTONS */
-.drop-zone {
-    border: 2px dashed #444;
-    padding: 2rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    transition: 0.3s;
-    width: 100%;
-}
-.drop-zone:hover { border-color: #00ff88; background: #1f1f2e; }
-
-.upload-btn {
-    background: #333;
-    color: #fff;
-    padding: 12px 20px; /* Larger touch target for fingers */
-    border-radius: 4px;
-    cursor: pointer;
-    display: inline-block;
-    width: 100%; /* Full width on mobile is easier to tap */
-    max-width: 300px;
-}
-.upload-btn:hover { background: #444; }
-#file-name { 
-    display: block; 
-    margin-top: 10px; 
-    font-size: 0.9rem; 
-    color: #666; 
-    word-break: break-all; /* Prevents long filenames breaking layout */
-}
-
-.action-btn {
-    background: linear-gradient(45deg, #007bff, #00ff88);
-    border: none;
-    padding: 15px 30px;
-    color: #000;
-    font-weight: bold;
-    border-radius: 50px;
-    font-size: 1rem;
-    cursor: pointer;
-    opacity: 0.5;
-    transition: 0.3s;
-    width: 100%; /* Full width button on mobile */
-}
-.action-btn:not([disabled]) { opacity: 1; box-shadow: 0 0 15px #00ff88aa; }
-
-/* RESULTS CARD */
-.score-circle {
-    width: 100px; /* Slightly smaller for mobile */
-    height: 100px;
-    border-radius: 50%;
-    border: 5px solid #00ff88;
-    display: flex;
     justify-content: center;
+    overflow-x: hidden;
+}
+
+/* =========================================
+   SECTION 1: THE ORIGINAL "HERO" LOOK
+   ========================================= */
+
+.main-container {
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+}
+
+header h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #1a202c;
+    letter-spacing: -1px;
+    margin-bottom: 0.5rem;
+}
+
+/* The "Glitch" effect is now subtle/modern */
+.glitch-text {
+    position: relative;
+    display: inline-block;
+}
+
+.subtitle {
+    color: #718096;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+}
+
+/* The 3D Student Image Container */
+.hero-image-container {
+    margin: 20px auto;
+    width: 300px; /* Adjust based on your actual image size */
+    height: auto;
+    filter: drop-shadow(0 10px 20px var(--hero-glow)); /* The Teal Glow */
+    transition: transform 0.3s ease;
+}
+
+.hero-image-container:hover {
+    transform: translateY(-5px); /* Floating effect */
+}
+
+/* =========================================
+   SECTION 2: UPLOAD INTERFACE
+   ========================================= */
+
+.upload-section {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05); /* Soft shadow */
+    border: 1px solid #e2e8f0;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.briefing-card h3 {
+    color: var(--accent-teal);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.input-group {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    font-size: 2rem;
+    gap: 15px;
+}
+
+/* Stylish File Input */
+.file-input {
+    padding: 10px;
+    border: 2px dashed #cbd5e0;
+    border-radius: 10px;
+    width: 100%;
+    background: #f7fafc;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.file-input:hover {
+    border-color: var(--accent-teal);
+}
+
+/* The Teal Glow Button */
+.start-btn, .next-level-btn {
+    background: linear-gradient(135deg, var(--accent-teal), #0097a7);
+    color: white;
+    font-size: 1.1rem;
     font-weight: bold;
-    margin: 0 auto 1rem auto;
-    color: #00ff88;
-    box-shadow: 0 0 20px rgba(0,255,136, 0.2);
+    padding: 15px 40px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px var(--hero-glow); /* Glowing Shadow */
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
-.archetype { color: #ff0055; font-size: 1.1rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px;}
 
-.boss-box {
-    background: #2a2a35;
-    border-left: 4px solid #ff0055;
-    padding: 15px;
+.start-btn:hover, .next-level-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px var(--hero-glow);
+}
+
+/* Loading Text */
+.loading-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--accent-teal);
     margin-top: 20px;
+}
+
+/* =========================================
+   SECTION 3: GAMIFIED RESULTS (The New Logic)
+   ========================================= */
+
+/* The Card that pops up */
+.level-complete-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    border-top: 5px solid var(--accent-teal);
+    max-width: 600px;
+    margin: 0 auto;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header-banner {
+    background: #e0f2f1;
+    color: #00695c;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+/* Stats Grid */
+.stats-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.score-box, .xp-box {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid #e2e8f0;
+}
+
+.label {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-top: 5px;
+}
+
+/* Character Class Reveal */
+.character-reveal h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #1e293b;
+}
+
+/* Boss Feedback Bubble */
+.boss-feedback {
+    background: #fffbeb; /* Light yellow warning */
+    border-left: 4px solid var(--gold-score);
+    padding: 15px;
     text-align: left;
+    margin-bottom: 30px;
+    color: #78350f;
     font-style: italic;
-    font-size: 0.95rem;
+    border-radius: 0 10px 10px 0;
 }
 
-/* UTILS */
-.hidden { display: none; }
-.loader { width: 100%; height: 4px; background: #333; margin: 20px 0; position: relative; overflow: hidden;}
-.scanner-line {
-    width: 30%; height: 100%; background: #00ff88;
-    position: absolute; animation: scan 1s infinite linear;
+/* Animations */
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
-@keyframes scan { 0% { left: -30%; } 100% { left: 100%; } }
 
-/* --- MOBILE SPECIFIC ADJUSTMENTS --- */
-@media (max-width: 480px) {
-    .main-container {
-        padding: 1.2rem; /* Less padding on small screens */
-        border: none; /* Remove border on mobile for cleaner look */
-        box-shadow: none;
-        background: transparent;
-    }
-    
-    body {
-        align-items: flex-start; /* Start from top, don't center vertically */
-        padding-top: 10px;
-    }
+@keyframes blinker {
+    50% { opacity: 0.5; }
+}
 
-    h1 { font-size: 1.5rem; }
-    .logo { font-size: 1rem; }
-    
-    /* Stack flex items if needed (not needed for HUD, but good for stats) */
-    .stats-row { flex-direction: column; }
+.blink {
+    animation: blinker 1s linear infinite;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    header h1 { font-size: 2.5rem; }
+    .stats-container { grid-template-columns: 1fr; }
+    .upload-section, .level-complete-card { padding: 20px; width: 90%; }
 }
