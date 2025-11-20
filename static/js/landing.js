@@ -1,8 +1,8 @@
-// small interactions to match reference feel
+// lightweight interactions: fade-in + parallax
 (function(){
   document.addEventListener('DOMContentLoaded', function(){
-    // simple fade in
-    document.querySelectorAll('.hero-card, .portrait-card img, .hero-right').forEach((el,i)=>{
+    const els = document.querySelectorAll('.hero-inner, .portrait-wrap img, .hero-right');
+    els.forEach((el,i)=>{
       el.style.opacity = 0;
       el.style.transform = 'translateY(12px)';
       setTimeout(()=> {
@@ -13,7 +13,6 @@
     });
   });
 
-  // parallax for larger screens
   if(window.innerWidth > 900){
     const img = document.getElementById('studentImg');
     const giant = document.querySelector('.giant-text');
