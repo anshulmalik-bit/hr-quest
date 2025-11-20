@@ -3,73 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HRQuest — Start the Game</title>
-    
-    <link rel="stylesheet" href="/static/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>HR Quest: The Simulation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-    <div class="background-blur"></div>
+    <div class="main-container">
+        <header class="game-hud">
+            <div class="logo">HR QUEST <span class="beta-tag">BETA</span></div>
+            <div class="player-status">
+                <span id="player-xp">XP: 0</span>
+            </div>
+        </header>
 
-    <nav class="navbar">
-        <div class="logo">HRQuest</div>
-        <div class="nav-links">
-            <a href="#how-it-works">Marketplace</a>
-            <a href="#exercises">Resources</a>
-            <a href="#community">Community</a>
-            <a href="#faq">FAQ</a>
-        </div>
-        <div class="nav-actions">
-            <a href="#" class="nav-button login-button">Log In</a>
-            <a href="#" class="nav-button primary-button">Sign Up</a>
-        </div>
-    </nav>
+        <section id="level-1-area" class="game-stage active">
+            <div class="quest-card">
+                <h1>Level 1: The Gatekeeper</h1>
+                <p class="quest-desc">To enter the corporate dungeon, you must pass the ATS Scanner. Equip your resume to begin.</p>
+                
+                <div class="drop-zone">
+                    <input type="file" id="resumeInput" accept=".pdf" hidden>
+                    <label for="resumeInput" class="upload-btn">
+                        📁 Equip Resume (PDF)
+                    </label>
+                    <span id="file-name">No item selected</span>
+                </div>
 
-    <header class="hero">
-        <div class="hero-left">
-            <div class="main-title">
-                <span class="small-text">Hone Your Skills</span>
-                <span class="large-text">HR<br>QUEST</span>
+                <button id="start-scan-btn" class="action-btn" disabled>
+                    ⚔️ Start Scan
+                </button>
             </div>
-            <p class="hero-description">The ultimate platform to master HR interview skills with interactive simulations.</p>
-            
-            <div class="button-group">
-                <a href="#" class="cta-button">Start Exploring</a>
-                <a href="#" class="secondary-button">Learn More</a>
-            </div>
-        </div>
+        </section>
 
-        <div class="hero-center-image">
-            <div class="image-card">
-                <img src="/static/images/student.png" alt="HRQuest Student" class="student-image">
+        <div id="loading-screen" class="hidden">
+            <div class="loader">
+                <div class="scanner-line"></div>
             </div>
-            <div class="floating-badge">
-                <span class="badge-icon">⚡</span>
-                <span class="badge-text">AI Powered</span>
-            </div>
+            <p>Analyzing Armor Stats...</p>
         </div>
 
-        <div class="hero-right">
-            <div class="stat-box">
-                <span class="stat-number">10k+</span>
-                <span class="stat-label">Active Users</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-number">500+</span>
-                <span class="stat-label">Simulations</span>
-            </div>
-            
-            <div class="scrolldown">
-                <span>Scroll Down</span>
-                <div class="line"></div>
-            </div>
-        </div>
-    </header>
+        <section id="results-area" class="game-stage hidden">
+            </section>
 
-    <footer class="footer">
-        <p>&copy; 2024 HRQuest. All rights reserved.</p>
-    </footer>
+    </div>
 
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
