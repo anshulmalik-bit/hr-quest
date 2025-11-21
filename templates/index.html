@@ -10,31 +10,32 @@
 </head>
 <body>
 
-    <!-- LANDING PAGE -->
+    <!-- ==================== 
+         PART 1: LANDING PAGE 
+         (Visible Only at Start)
+         ==================== -->
     <div id="landing-page">
         
-        <!-- Navigation Bar (Logo Only - Buttons Removed) -->
         <nav class="navbar">
             <div class="logo">HR Quest</div>
         </nav>
 
-        <!-- Background Spheres (The Design Element) -->
+        <!-- Floating Elements -->
         <div class="sphere sphere-1"></div>
         <div class="sphere sphere-2"></div>
         <div class="sphere sphere-3"></div>
         <div class="sphere sphere-4"></div>
         <div class="sphere sphere-5"></div>
-
-        <!-- Floating "Alive" Objects (Restored) -->
+        
         <i class="fas fa-book floating-obj obj-1"></i>
         <i class="fas fa-briefcase floating-obj obj-2"></i>
         <i class="fas fa-search floating-obj obj-3"></i>
         <i class="fas fa-comment-dots floating-obj obj-4"></i>
 
-        <!-- Main Hero Container -->
+        <!-- Main Hero Content -->
         <div class="hero-container">
             <div class="hero-content-wrapper">
-                <!-- IMAGE SECTION -->
+                <!-- Image -->
                 <div class="hero-image-container">
                     <img src="/static/girl.png" 
                          onerror="this.src='https://cdn3d.iconscout.com/3d/premium/thumb/female-student-holding-books-2974934-2477365.png'" 
@@ -42,9 +43,10 @@
                          class="hero-character">
                 </div>
 
-                <!-- TEXT SECTION -->
+                <!-- Text & Button -->
                 <div class="hero-text-container">
                     <p class="sub-title">Practice with Simulations</p>
+                    <!-- The Parallax Effect will apply to this H1 -->
                     <h1 class="main-title">HR</h1>
                     <p class="description">
                         The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.
@@ -57,21 +59,52 @@
         </div>
     </div>
 
-    <!-- GAME INTERFACE -->
-    <div id="game-container">
-        <div class="game-box" id="level1-box">
-            <h1 class="game-title">LEVEL 1: THE GATEKEEPER</h1>
-            <p>To enter the corporate fortress, you must pass the ATS Scanners.</p>
-            
-            <div class="input-area">
-                <p><strong>Mission:</strong> Upload your Resume (PDF)</p>
-                <input type="file" id="resumeInput" accept=".pdf" class="file-upload">
-                <button class="action-btn" onclick="uploadResume()">INITIATE SCAN</button>
-            </div>
-            <div id="game-status"></div>
-        </div>
+    <!-- ==================== 
+         PART 2: GAME INTERFACE 
+         (Hidden until "Get Started" is clicked)
+         ==================== -->
+    <div id="game-container" style="display: none;">
+        <div class="main-container">
+            <!-- This is the "Gatekeeper Code" - strictly inside the game container now -->
+            <header>
+                <h1 class="glitch-text">HR QUEST_</h1>
+                <p id="level-title" class="subtitle">LEVEL 1: THE GATEKEEPER</p>
+            </header>
 
-        <div id="result-area" class="game-box" style="display: none;"></div>
+            <!-- LEVEL 1: RESUME UPLOAD -->
+            <div id="level1-section" class="game-interface">
+                <div class="upload-section">
+                    <div class="briefing-card">
+                        <h3>MISSION BRIEFING</h3>
+                        <p>To enter the corporate fortress, you must pass the ATS Scanners. Upload your Resume (PDF) to proceed.</p>
+                    </div>
+                    <div class="input-group">
+                        <input type="file" id="resumeInput" accept=".pdf" class="file-input">
+                        <button onclick="uploadResume()" class="start-btn">INITIATE SCAN</button>
+                    </div>
+                    <div id="game-status" class="loading-text"></div>
+                </div>
+            </div>
+
+            <!-- RESULT AREA -->
+            <div id="result-area"></div>
+
+            <!-- LEVEL 2 -->
+            <div id="level2-section" class="game-interface" style="display: none;">
+                <div class="upload-section">
+                    <div class="briefing-card">
+                        <h3 id="l2-scenario-title">SCENARIO LOADING...</h3>
+                        <p id="l2-scenario-text">...</p>
+                    </div>
+                    <div class="input-group">
+                        <textarea id="l2-answer" rows="5" class="file-input" placeholder="Type your response here..."></textarea>
+                        <input type="hidden" id="l2-question-id">
+                        <button onclick="submitLevel2()" class="start-btn">SUBMIT RESPONSE</button>
+                    </div>
+                    <div id="l2-status" class="loading-text"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename='app.js') }}"></script>
