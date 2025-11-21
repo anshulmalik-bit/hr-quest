@@ -82,11 +82,11 @@ body {
 .sphere-4 { width: 200px; height: 200px; bottom: -5%; right: -5%; animation-delay: 3s; }
 .sphere-5 { width: 90px; height: 90px; bottom: 15%; left: 35%; animation-delay: 4s; }
 
-/* --- ALIVE FLOATING OBJECTS (Restored) --- */
+/* --- ALIVE FLOATING OBJECTS --- */
 .floating-obj {
     position: absolute;
     font-size: 2.5rem;
-    color: rgba(74, 93, 35, 0.15); /* Subtle transparent green */
+    color: rgba(74, 93, 35, 0.15);
     z-index: 0;
     animation: floatObj 10s ease-in-out infinite;
     filter: drop-shadow(0 10px 10px rgba(0,0,0,0.05));
@@ -99,10 +99,10 @@ body {
     100% { transform: translate(0, 0) rotate(0deg); }
 }
 
-.obj-1 { top: 20%; left: 15%; font-size: 3rem; animation-delay: 0s; } /* Book */
-.obj-2 { top: 60%; right: 20%; font-size: 4rem; animation-delay: 2s; } /* Briefcase */
-.obj-3 { bottom: 20%; left: 20%; font-size: 2.5rem; animation-delay: 4s; } /* Search */
-.obj-4 { top: 30%; right: 35%; font-size: 2rem; animation-delay: 1s; } /* Chat */
+.obj-1 { top: 20%; left: 15%; font-size: 3rem; animation-delay: 0s; } 
+.obj-2 { top: 60%; right: 20%; font-size: 4rem; animation-delay: 2s; } 
+.obj-3 { bottom: 20%; left: 20%; font-size: 2.5rem; animation-delay: 4s; } 
+.obj-4 { top: 30%; right: 35%; font-size: 2rem; animation-delay: 1s; } 
 
 /* Hero Container */
 .hero-container {
@@ -179,6 +179,7 @@ body {
     color: var(--hr-lime);
     letter-spacing: -6px;
     text-shadow: 0 20px 40px rgba(205, 220, 57, 0.3);
+    /* PARALLAX ENABLED HERE */
     transition: transform 0.1s ease-out;
     will-change: transform;
 }
