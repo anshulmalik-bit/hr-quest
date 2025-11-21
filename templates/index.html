@@ -12,7 +12,7 @@
            1. EXACT YELLOW THEME & STYLES
            ========================================= */
         :root {
-            /* The "Lime/Cream" Palette from your image */
+            /* The "Lime/Cream" Palette */
             --bg-cream: #fdfeec;       /* Lightest Cream */
             --bg-lime: #eafcb3;        /* The Lime Gradient end */
             --text-olive: #8a9a5b;     /* Muted green for subtitles */
@@ -22,6 +22,7 @@
             
             /* Game Palette */
             --accent-teal: #00bcd4;
+            --gold-score: #f59e0b;
             --hero-glow: rgba(0, 188, 212, 0.4);
         }
 
@@ -46,6 +47,49 @@
             overflow: hidden;
         }
 
+        /* --- NAVIGATION BAR --- */
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 40px 60px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-btn {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .nav-btn:hover {
+            background: rgba(74, 93, 35, 0.1);
+            transform: translateY(-2px);
+        }
+
         /* --- FLOATING SPHERES (Background) --- */
         .sphere {
             position: absolute;
@@ -54,47 +98,33 @@
             z-index: 0;
             box-shadow: 0 15px 35px rgba(160, 184, 100, 0.15);
         }
-        /* Positioning to match your reference */
-        .sphere-1 { width: 140px; height: 140px; top: 5%; left: 30%; }
-        .sphere-2 { width: 80px; height: 80px; top: 15%; right: 10%; }
+        /* Positioning */
+        .sphere-1 { width: 140px; height: 140px; top: 15%; left: 30%; }
+        .sphere-2 { width: 80px; height: 80px; top: 20%; right: 10%; }
         .sphere-3 { width: 60px; height: 60px; top: 45%; left: 8%; }
         .sphere-4 { width: 200px; height: 200px; bottom: -5%; right: -5%; }
         .sphere-5 { width: 90px; height: 90px; bottom: 15%; left: 35%; }
 
-        /* --- GLASS CARD (The Main Box) --- */
-        .glass-card {
-            width: 85%;
-            max-width: 1100px;
-            height: 80vh;
-            background: rgba(255, 255, 255, 0.35); /* See-through glass */
-            backdrop-filter: blur(25px);            /* The blur effect */
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 30px 60px rgba(74, 93, 35, 0.05);
+        /* --- HERO CONTAINER --- */
+        .hero-container {
+            width: 90%;
+            max-width: 1300px;
+            height: 90vh;
             position: relative;
             z-index: 1;
             display: flex;
             flex-direction: column;
-            padding: 40px 60px;
+            padding: 20px;
             box-sizing: border-box;
-        }
-
-        /* Logo */
-        .top-logo {
-            text-align: center;
-            font-weight: 700;
-            color: var(--text-dark);
-            font-size: 1.1rem;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-            opacity: 0.8;
+            justify-content: center;
         }
 
         .hero-content-wrapper {
             display: flex;
             flex: 1;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 50px;
         }
 
         /* LEFT: The Character Image */
@@ -102,81 +132,92 @@
             flex: 1;
             height: 100%;
             display: flex;
-            align-items: flex-end; /* Anchor image to bottom */
+            align-items: flex-end;
             justify-content: center;
             position: relative;
         }
 
         .hero-character {
-            max-height: 95%; 
-            max-width: 100%;
+            /* Huge Size */
+            height: 110%;
+            width: auto;
             object-fit: contain;
-            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.1));
-            /* Slight bounce animation */
-            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 40px 60px rgba(74, 93, 35, 0.25));
+            
+            position: absolute;
+            bottom: -5%;
+            left: 50%;
+            transform: translateX(-50%);
+            
+            animation: float-big 6s ease-in-out infinite;
         }
 
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        @keyframes float-big {
+            0% { transform: translateX(-50%) translateY(0px); }
+            50% { transform: translateX(-50%) translateY(-20px); }
+            100% { transform: translateX(-50%) translateY(0px); }
         }
 
         /* RIGHT: Typography */
         .hero-text-container {
-            flex: 1.1;
-            padding-left: 60px;
+            flex: 1.2;
             display: flex;
             flex-direction: column;
             justify-content: center;
             text-align: left;
+            padding-bottom: 50px;
         }
 
         .sub-title {
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: var(--text-olive);
-            margin: 0 0 10px 0;
+            margin: 0 0 15px 0;
         }
 
         .main-title {
-            font-size: 10rem; /* Huge HR Text */
+            font-size: 12rem; /* Massive HR Text */
             line-height: 0.8;
             margin: 0;
             font-weight: 900;
             color: var(--hr-lime);
-            letter-spacing: -4px;
+            letter-spacing: -6px;
+            text-shadow: 0 20px 40px rgba(205, 220, 57, 0.3);
+            transition: transform 0.1s ease-out;
+            will-change: transform;
         }
 
         .description {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: #6b7c45;
-            line-height: 1.5;
-            max-width: 420px;
-            margin: 30px 0 40px 0;
+            line-height: 1.6;
+            max-width: 480px;
+            margin: 40px 0 50px 0;
+            font-weight: 500;
         }
 
         /* The "Get Started" Button */
         .get-started-btn {
-            background: transparent;
-            color: var(--text-dark);
-            border: 2px solid var(--text-dark);
-            padding: 14px 35px;
-            border-radius: 50px;
-            font-size: 1.1rem;
+            background: var(--text-dark);
+            color: #fff;
+            border: none;
+            padding: 18px 45px;
+            border-radius: 60px;
+            font-size: 1.2rem;
             font-weight: 700;
             cursor: pointer;
             width: fit-content;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            box-shadow: 0 15px 30px rgba(74, 93, 35, 0.3);
         }
 
         .get-started-btn:hover {
-            background: var(--text-dark);
-            color: #fff;
-            transform: translateX(5px);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(74, 93, 35, 0.4);
+            background: #3a4a1b;
         }
 
         /* =========================================
@@ -233,11 +274,12 @@
 
         /* Mobile Responsiveness */
         @media (max-width: 900px) {
-            .glass-card { height: auto; padding: 30px; margin: 20px; }
-            .hero-content-wrapper { flex-direction: column-reverse; } /* Text on top/bottom depending on preference */
-            .hero-text-container { padding-left: 0; text-align: center; align-items: center; margin-bottom: 30px; }
-            .main-title { font-size: 6rem; }
-            .sphere { display: none; } /* Hide spheres on mobile */
+            .navbar { padding: 20px; }
+            .hero-container { height: auto; padding: 20px; }
+            .hero-content-wrapper { flex-direction: column-reverse; gap: 0; }
+            .hero-text-container { padding-left: 0; text-align: center; align-items: center; margin-bottom: 50px; }
+            .main-title { font-size: 6rem; letter-spacing: -2px; }
+            .sphere { opacity: 0.5; }
         }
     </style>
 </head>
@@ -245,6 +287,17 @@
 
     <!-- LANDING PAGE -->
     <div id="landing-page">
+        
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <div class="logo">HR Quest</div>
+            <div class="nav-links">
+                <a href="#" class="nav-btn">Exercises</a>
+                <a href="#" class="nav-btn">Resources</a>
+                <a href="#" class="nav-btn">FAQ</a>
+            </div>
+        </nav>
+
         <!-- Background Spheres -->
         <div class="sphere sphere-1"></div>
         <div class="sphere sphere-2"></div>
@@ -252,15 +305,14 @@
         <div class="sphere sphere-4"></div>
         <div class="sphere sphere-5"></div>
 
-        <div class="glass-card">
-            <div class="top-logo">HR Quest</div>
-
+        <!-- Main Hero Container -->
+        <div class="hero-container">
             <div class="hero-content-wrapper">
                 <!-- IMAGE SECTION -->
                 <div class="hero-image-container">
                     <!-- 
-                        NOTE: The 'src' below looks for 'girl.png' in your 'static' folder.
-                        If it's not there, it falls back to a placeholder image.
+                        Note for Preview: If 'girl.png' is not found in the preview environment,
+                        it will fallback to the online placeholder so you can see the layout.
                     -->
                     <img src="/static/girl.png" 
                          onerror="this.src='https://cdn3d.iconscout.com/3d/premium/thumb/female-student-holding-books-2974934-2477365.png'" 
@@ -271,6 +323,7 @@
                 <!-- TEXT SECTION -->
                 <div class="hero-text-container">
                     <p class="sub-title">Practice with Simulations</p>
+                    <!-- PARALLAX TARGET -->
                     <h1 class="main-title">HR</h1>
                     <p class="description">
                         The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.
@@ -302,6 +355,20 @@
 
     <!-- LOGIC -->
     <script>
+        // ----- PARALLAX SCRIPT -----
+        document.addEventListener('mousemove', (e) => {
+            const landingPage = document.getElementById('landing-page');
+            if (landingPage.style.display === 'none') return; 
+
+            const title = document.querySelector('.main-title');
+            const movementStrength = 40; 
+
+            const x = (window.innerWidth / 2 - e.pageX) / movementStrength;
+            const y = (window.innerHeight / 2 - e.pageY) / movementStrength;
+
+            title.style.transform = `translateX(${x}px) translateY(${y}px)`;
+        });
+
         // 1. Transition Logic
         function enterGame() {
             const landing = document.getElementById('landing-page');
