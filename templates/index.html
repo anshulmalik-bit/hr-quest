@@ -9,16 +9,17 @@
     
     <style>
         /* =========================================
-           1. EXACT YELLOW THEME & STYLES
+           1. ALIVE YELLOW THEME & STYLES
            ========================================= */
         :root {
             /* The "Lime/Cream" Palette */
-            --bg-cream: #fdfeec;       /* Lightest Cream */
-            --bg-lime: #eafcb3;        /* The Lime Gradient end */
-            --text-olive: #8a9a5b;     /* Muted green for subtitles */
-            --text-dark: #4a5d23;      /* Dark Green for logo/buttons */
-            --hr-lime: #cddc39;        /* The big "HR" text color */
-            --sphere-color: #dcefa8;   /* Floating ball color */
+            --bg-cream: #fdfeec;       
+            --bg-lime: #eafcb3;        
+            --bg-accent: #d4f58d;      /* Extra color for movement */
+            --text-olive: #8a9a5b;     
+            --text-dark: #4a5d23;      
+            --hr-lime: #cddc39;        
+            --sphere-color: #dcefa8;   
             
             /* Game Palette */
             --accent-teal: #00bcd4;
@@ -30,10 +31,19 @@
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-lime) 100%);
+            /* ANIMATED GRADIENT BACKGROUND */
+            background: linear-gradient(-45deg, var(--bg-cream), var(--bg-lime), var(--bg-accent), var(--bg-cream));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: var(--text-dark);
             min-height: 100vh;
             overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* --- LANDING PAGE CONTAINER --- */
@@ -69,10 +79,7 @@
             text-transform: uppercase;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
+        .nav-links { display: flex; gap: 30px; }
 
         .nav-btn {
             text-decoration: none;
@@ -97,13 +104,42 @@
             background: radial-gradient(circle at 30% 30%, #faffd1, var(--sphere-color));
             z-index: 0;
             box-shadow: 0 15px 35px rgba(160, 184, 100, 0.15);
+            /* Add gentle bobbing animation */
+            animation: floatSphere 8s ease-in-out infinite;
         }
-        /* Positioning */
-        .sphere-1 { width: 140px; height: 140px; top: 15%; left: 30%; }
-        .sphere-2 { width: 80px; height: 80px; top: 20%; right: 10%; }
-        .sphere-3 { width: 60px; height: 60px; top: 45%; left: 8%; }
-        .sphere-4 { width: 200px; height: 200px; bottom: -5%; right: -5%; }
-        .sphere-5 { width: 90px; height: 90px; bottom: 15%; left: 35%; }
+        
+        @keyframes floatSphere {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .sphere-1 { width: 140px; height: 140px; top: 15%; left: 30%; animation-delay: 0s; }
+        .sphere-2 { width: 80px; height: 80px; top: 20%; right: 10%; animation-delay: 1s; }
+        .sphere-3 { width: 60px; height: 60px; top: 45%; left: 8%; animation-delay: 2s; }
+        .sphere-4 { width: 200px; height: 200px; bottom: -5%; right: -5%; animation-delay: 3s; }
+        .sphere-5 { width: 90px; height: 90px; bottom: 15%; left: 35%; animation-delay: 4s; }
+
+        /* --- FLOATING OBJECTS (Books, Briefcase, etc.) --- */
+        .floating-obj {
+            position: absolute;
+            font-size: 2.5rem;
+            color: rgba(74, 93, 35, 0.2); /* Subtle transparent green */
+            z-index: 0;
+            animation: floatObj 10s ease-in-out infinite;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.05));
+        }
+
+        @keyframes floatObj {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(10px, -20px) rotate(5deg); }
+            66% { transform: translate(-10px, 20px) rotate(-5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        .obj-1 { top: 20%; left: 15%; font-size: 3rem; animation-delay: 0s; } /* Book */
+        .obj-2 { top: 60%; right: 20%; font-size: 4rem; animation-delay: 2s; } /* Briefcase */
+        .obj-3 { bottom: 20%; left: 20%; font-size: 2.5rem; animation-delay: 4s; } /* Search */
+        .obj-4 { top: 30%; right: 35%; font-size: 2rem; animation-delay: 1s; } /* Chat */
 
         /* --- HERO CONTAINER --- */
         .hero-container {
@@ -138,17 +174,14 @@
         }
 
         .hero-character {
-            /* Huge Size */
             height: 110%;
             width: auto;
             object-fit: contain;
             filter: drop-shadow(0 40px 60px rgba(74, 93, 35, 0.25));
-            
             position: absolute;
             bottom: -5%;
             left: 50%;
             transform: translateX(-50%);
-            
             animation: float-big 6s ease-in-out infinite;
         }
 
@@ -176,7 +209,7 @@
         }
 
         .main-title {
-            font-size: 12rem; /* Massive HR Text */
+            font-size: 12rem;
             line-height: 0.8;
             margin: 0;
             font-weight: 900;
@@ -224,7 +257,7 @@
            2. GAME INTERFACE (Hidden Initially)
            ========================================= */
         #game-container {
-            display: none; /* Hidden by default */
+            display: none;
             background-color: #f8fafc; 
             min-height: 100vh;
             width: 100%;
@@ -259,7 +292,6 @@
         }
         .action-btn:hover { transform: translateY(-2px); }
 
-        /* Results Styling */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
         .stat-card { background: #f8fafc; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; }
         .stat-val { font-size: 2.5rem; font-weight: 900; color: #0f172a; }
@@ -279,7 +311,7 @@
             .hero-content-wrapper { flex-direction: column-reverse; gap: 0; }
             .hero-text-container { padding-left: 0; text-align: center; align-items: center; margin-bottom: 50px; }
             .main-title { font-size: 6rem; letter-spacing: -2px; }
-            .sphere { opacity: 0.5; }
+            .sphere, .floating-obj { opacity: 0.5; }
         }
     </style>
 </head>
@@ -298,22 +330,24 @@
             </div>
         </nav>
 
-        <!-- Background Spheres -->
+        <!-- Background Spheres (Animated) -->
         <div class="sphere sphere-1"></div>
         <div class="sphere sphere-2"></div>
         <div class="sphere sphere-3"></div>
         <div class="sphere sphere-4"></div>
         <div class="sphere sphere-5"></div>
 
+        <!-- Floating Objects (Alive Elements) -->
+        <i class="fas fa-book floating-obj obj-1"></i>
+        <i class="fas fa-briefcase floating-obj obj-2"></i>
+        <i class="fas fa-search floating-obj obj-3"></i>
+        <i class="fas fa-comment-dots floating-obj obj-4"></i>
+
         <!-- Main Hero Container -->
         <div class="hero-container">
             <div class="hero-content-wrapper">
                 <!-- IMAGE SECTION -->
                 <div class="hero-image-container">
-                    <!-- 
-                        Note for Preview: If 'girl.png' is not found in the preview environment,
-                        it will fallback to the online placeholder so you can see the layout.
-                    -->
                     <img src="/static/girl.png" 
                          onerror="this.src='https://cdn3d.iconscout.com/3d/premium/thumb/female-student-holding-books-2974934-2477365.png'" 
                          alt="Character" 
