@@ -125,5 +125,75 @@ def judge_level2():
         "feedback": feedback
     })
 
+@app.route('/api/judge_level3', methods=['POST'])
+def judge_level3():
+    data = request.json
+    answer = data.get('answer', '').lower()
+    
+    score = 0
+    feedback = []
+    
+    # STAR Method Check
+    star_keywords = ['situation', 'task', 'action', 'result', 'handled', 'resolved', 'outcome']
+    matched = [kw for kw in star_keywords if kw in answer]
+    
+    if len(matched) >= 3:
+        score += 50
+        feedback.append("STAR method detected (+50)")
+    else:
+        feedback.append("Try to structure as Situation, Task, Action, Result (+10)")
+        score += 10
+
+    # Empathy/Conflict Resolution
+    soft_skills = ['listened', 'understood', 'calm', 'perspective', 'compromise']
+    skill_match = [kw for kw in soft_skills if kw in answer]
+    if skill_match:
+        score += 30
+        feedback.append(f"Good soft skills: {', '.join(skill_match)} (+30)")
+
+    return jsonify({"score": score, "feedback": feedback})
+
+@app.route('/api/judge_level4', methods=['POST'])
+def judge_level4():
+    data = request.json
+    answer = data.get('answer', '').lower()
+    
+    score = 0
+    feedback = []
+    
+    # Strategy Check
+    strategy_keywords = ['prioritize', 'delegate', 'communicate', 'plan', 'timeline', 'negotiate']
+    matched = [kw for kw in strategy_keywords if kw in answer]
+    
+    if len(matched) >= 2:
+        score += 60
+        feedback.append("Strategic thinking detected (+60)")
+    else:
+        score += 20
+        feedback.append("Consider prioritization and communication (+20)")
+
+    return jsonify({"score": score, "feedback": feedback})
+
+@app.route('/api/judge_level5', methods=['POST'])
+def judge_level5():
+    data = request.json
+    answer = data.get('answer', '').lower()
+    
+    score = 0
+    feedback = []
+    
+    # Salary/Growth Check
+    growth_keywords = ['growth', 'learn', 'long-term', 'contribute', 'market', 'fair']
+    matched = [kw for kw in growth_keywords if kw in answer]
+    
+    if matched:
+        score += 50
+        feedback.append("Good growth mindset (+50)")
+    else:
+        score += 20
+        feedback.append("Be specific about your goals (+20)")
+
+    return jsonify({"score": score, "feedback": feedback})
+
 if __name__ == '__main__':
     app.run(debug=True)

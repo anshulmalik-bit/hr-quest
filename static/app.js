@@ -1,268 +1,343 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // DOM Elements
-    const landingPage = document.getElementById('landing-page');
-    const gameContainer = document.getElementById('game-container');
-    const startBtn = document.getElementById('start-btn');
 
-    // Level 1 Elements
-    const level1 = document.getElementById('level-1');
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('resume-upload');
-    const l1Result = document.getElementById('level-1-result');
-    const nextL2Btn = document.getElementById('next-l2-btn');
+    // --- Configuration & State ---
+    const MESSAGES = {
+        loading: "Taking a moment to analyze...",
+        success: "Great insight. Let's move forward.",
+        error: "Let's try that again. No rush.",
+        uploading: "Reading your journey...",
+        uploadSuccess: "Analysis Complete. Impressive background.",
+        uploadError: "Could not read file. Please try a PDF."
+    };
 
-    // Level 2 Elements
-    const level2 = document.getElementById('level-2');
-    const scenarioText = document.getElementById('scenario-text');
-    const logicAnswer = document.getElementById('logic-answer');
-    const submitLogicBtn = document.getElementById('submit-logic-btn');
-    const l2Result = document.getElementById('level-2-result');
-    const nextL3Btn = document.getElementById('next-l3-btn');
+    const STATE = {
+        roleCategory: null,
+        roleSpecialization: null,
+        currentLevel: 0,
+        totalScore: 0,
+        tokens: [],
+        motionMode: 'full' // full, reduced, static
+    };
 
-    // Level 3 Elements
-    const level3 = document.getElementById('level-3');
-    const recordBtn = document.getElementById('record-btn');
-    const transcriptionBox = document.getElementById('transcription-box');
-    const transcriptionText = document.getElementById('transcription-text');
-    const l3Result = document.getElementById('level-3-result');
-    const restartBtn = document.getElementById('restart-btn');
+    // --- DOM Elements ---
+    const root = document.documentElement;
+    const sections = document.querySelectorAll('.snap-section');
+    const motionToggle = document.getElementById('motion-toggle');
+    const mainScroll = document.getElementById('main-scroll');
+    const progressBar = document.getElementById('global-progress'); // Note: Not in HTML yet, but good for future
+    const tokenDisplay = document.getElementById('final-tokens'); // Using final tokens container for now
 
-    // State
-    let currentLevel = 1;
-    let totalScore = 0;
-    let level2QuestionId = null;
+    // --- Theme Manager ---
+    const observerOptions = {
+        root: mainScroll,
+        threshold: 0.5
+    };
 
-    // --- Navigation ---
-    startBtn.addEventListener('click', () => {
-        landingPage.classList.remove('active');
-        landingPage.classList.add('hidden');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Update Active Class
+                sections.forEach(s => s.classList.remove('active'));
+                entry.target.classList.add('active');
 
-        gameContainer.classList.remove('hidden');
-        gameContainer.classList.add('active');
-    });
+                // Update Theme
+                const theme = entry.target.getAttribute('data-theme');
+                if (theme && theme !== 'dynamic') {
+                    updateTheme(theme);
+                } else if (theme === 'dynamic' && STATE.roleCategory) {
+                    const roleThemeMap = {
+                        'MBA': 'pastel-yellow',
+                        'B.Tech': 'pastel-red',
+                        'Data': 'pastel-green'
+                    };
+                    updateTheme(roleThemeMap[STATE.roleCategory] || 'pastel-blue');
+                }
+            }
+        });
+    }, observerOptions);
 
-    // --- Level 1: Resume Scanner ---
-    dropZone.addEventListener('click', () => fileInput.click());
+    sections.forEach(section => observer.observe(section));
 
-    dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZone.style.borderColor = 'var(--primary-dark)';
-        dropZone.style.transform = 'scale(1.02)';
-    });
+    function updateTheme(themeName) {
+        root.style.setProperty('--bg-color', `var(--${themeName}-bg)`);
+        root.style.setProperty('--accent-color', `var(--${themeName}-accent)`);
+        root.style.setProperty('--text-color', `var(--${themeName}-text)`);
+    }
 
-    dropZone.addEventListener('dragleave', () => {
-        dropZone.style.borderColor = '#cbd5e1';
-        dropZone.style.transform = 'scale(1)';
-    });
+    // --- Role Selection ---
+    window.selectRole = (category, specialization) => {
+        STATE.roleCategory = category;
+        STATE.roleSpecialization = specialization;
 
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZone.style.borderColor = '#cbd5e1';
-        dropZone.style.transform = 'scale(1)';
-        if (e.dataTransfer.files.length) {
-            handleFileUpload(e.dataTransfer.files[0]);
-        }
-    });
+        const display = document.getElementById('selected-role-display');
+        if (display) display.textContent = `${specialization} (${category})`;
 
-    fileInput.addEventListener('change', () => {
-        if (fileInput.files.length) {
-            handleFileUpload(fileInput.files[0]);
-        }
-    });
+        // Scroll to Upload Section
+        document.getElementById('upload-section').scrollIntoView({ behavior: 'smooth' });
+    };
 
-    function handleFileUpload(file) {
+    // --- Resume Upload ---
+    window.uploadResume = async () => {
+        const fileInput = document.getElementById('resume-upload');
+        const statusText = document.getElementById('upload-status');
+        const feedbackArea = document.getElementById('upload-feedback');
+        const messageArea = document.getElementById('upload-message');
+
+        if (!fileInput.files.length) return;
+
+        const file = fileInput.files[0];
         const formData = new FormData();
         formData.append('resume', file);
 
-        // Show loading state
-        dropZone.innerHTML = '<div class="spinner"></div><h3>Analyzing Resume...</h3><p>Please wait, the AI is reading your file.</p>';
+        statusText.textContent = MESSAGES.uploading;
 
-        fetch('/api/scan_resume', {
-            method: 'POST',
-            body: formData
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.error) {
-                    alert(data.error);
-                    resetDropZone();
-                    return;
-                }
-
-                // Update Score Circle
-                const scoreDisplay = document.getElementById('l1-score-display');
-                scoreDisplay.textContent = data.score;
-
-                // Update Circle Stroke Dasharray for animation
-                const circle = document.querySelector('.circle');
-                const percentage = data.score; // Assuming score is 0-100
-                circle.style.strokeDasharray = `${percentage}, 100`;
-
-                document.getElementById('l1-class').textContent = data.class;
-
-                const feedbackList = document.getElementById('l1-feedback');
-                feedbackList.innerHTML = '';
-                data.feedback.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = item;
-                    feedbackList.appendChild(li);
-                });
-
-                totalScore += data.score;
-                dropZone.classList.add('hidden');
-                l1Result.classList.remove('hidden');
-            })
-            .catch(err => {
-                console.error(err);
-                resetDropZone();
+        try {
+            const response = await fetch('/api/scan_resume', {
+                method: 'POST',
+                body: formData
             });
-    }
 
-    function resetDropZone() {
-        dropZone.innerHTML = '<div class="upload-icon">📂</div><h3>Drop your PDF here</h3><p>or click to browse</p>';
-    }
+            if (response.ok) {
+                const data = await response.json();
+                STATE.totalScore += data.score; // Base score
+                statusText.textContent = "Upload Complete";
+                messageArea.textContent = MESSAGES.uploadSuccess;
+                feedbackArea.classList.remove('hidden');
+            } else {
+                statusText.textContent = MESSAGES.uploadError;
+            }
+        } catch (e) {
+            console.error(e);
+            statusText.textContent = MESSAGES.uploadError;
+        }
+    };
 
-    nextL2Btn.addEventListener('click', () => {
-        level1.classList.add('hidden');
-        level2.classList.remove('hidden');
-        loadLevel2Question();
-    });
+    // --- Level Navigation ---
+    window.startLevel = (level) => {
+        STATE.currentLevel = level;
 
-    // --- Level 2: Logic Labyrinth ---
+        // Hide all levels first
+        document.querySelectorAll('.level-section').forEach(el => el.classList.add('hidden'));
+
+        // Show current level
+        const levelEl = document.getElementById(`level-${level}`);
+        if (levelEl) {
+            levelEl.classList.remove('hidden');
+            levelEl.scrollIntoView({ behavior: 'smooth' });
+
+            // Update Theme explicitly for level
+            const theme = levelEl.getAttribute('data-theme');
+            if (theme) updateTheme(theme);
+
+            // Load specific content
+            if (level === 2) loadLevel2Question();
+            if (level === 6) showFinalResults();
+        }
+    };
+
+    window.nextLevel = (nextLevelIdx) => {
+        startLevel(nextLevelIdx);
+    };
+
+    // --- Gamification ---
+    window.awardToken = (tokenName) => {
+        if (STATE.tokens.includes(tokenName)) return;
+        STATE.tokens.push(tokenName);
+
+        // Create visual token
+        const token = document.createElement('div');
+        token.classList.add('token-chip');
+        token.textContent = `🏅 ${tokenName}`;
+        token.style.cssText = `
+            display: inline-block;
+            padding: 5px 10px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 15px;
+            margin: 5px;
+            animation: popIn 0.5s var(--ease-spring);
+        `;
+
+        // Add to final display
+        if (tokenDisplay) tokenDisplay.appendChild(token);
+    };
+
+    // --- Level 1: Introduction ---
+    window.startRecording = (level) => {
+        const btn = document.querySelector(`#level-${level} .btn-record`);
+        if (btn) btn.style.transform = "scale(1.2)";
+
+        setTimeout(() => {
+            if (btn) btn.style.transform = "scale(1)";
+            document.getElementById(`l${level}-feedback`).classList.remove('hidden');
+            if (level === 1) awardToken('Confidence');
+            if (level === 5) awardToken('Maturity');
+        }, 2000);
+    };
+
+    // --- Level 2: Technical ---
     function loadLevel2Question() {
         fetch('/api/get_level2_question')
             .then(res => res.json())
             .then(data => {
-                scenarioText.textContent = data.scenario;
-                level2QuestionId = data.id;
+                const el = document.getElementById('l2-question');
+                if (el) el.textContent = data.scenario;
             });
     }
 
-    submitLogicBtn.addEventListener('click', () => {
-        const answer = logicAnswer.value;
-        if (!answer.trim()) {
-            alert("Please enter an answer.");
-            return;
-        }
+    window.submitLevel2 = async () => {
+        const answer = document.getElementById('l2-answer').value;
+        if (!answer.trim()) return alert(MESSAGES.error);
 
-        fetch('/api/judge_level2', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: level2QuestionId, answer: answer })
-        })
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('l2-score').textContent = data.score;
+        // Mocking backend call for Level 2 as per original app.py structure
+        // Ideally this would be a fetch call like others
+        const id = 1; // Mock ID
 
-                const feedbackList = document.getElementById('l2-feedback');
-                feedbackList.innerHTML = '';
-                data.feedback.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = item;
-                    feedbackList.appendChild(li);
-                });
-
-                totalScore += data.score;
-                submitLogicBtn.classList.add('hidden');
-                logicAnswer.disabled = true;
-                l2Result.classList.remove('hidden');
+        try {
+            const response = await fetch('/api/judge_level2', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id, answer: answer })
             });
-    });
+            const data = await response.json();
+            STATE.totalScore += data.score;
 
-    nextL3Btn.addEventListener('click', () => {
-        level2.classList.add('hidden');
-        level3.classList.remove('hidden');
-    });
+            document.getElementById('l2-feedback').classList.remove('hidden');
+            awardToken('Clarity');
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
-    // --- Level 3: Final Boss (Voice) ---
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    // --- Level 3: Behavioral ---
+    window.submitLevel3 = async () => {
+        const answer = document.getElementById('l3-answer').value;
+        if (!answer.trim()) return alert(MESSAGES.error);
 
-    if (SpeechRecognition) {
-        const recognition = new SpeechRecognition();
-        recognition.continuous = false;
-        recognition.lang = 'en-US';
+        try {
+            const response = await fetch('/api/judge_level3', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ answer: answer })
+            });
+            const data = await response.json();
+            STATE.totalScore += data.score;
 
-        recordBtn.addEventListener('click', () => {
-            recognition.start();
-            recordBtn.classList.add('recording');
-        });
+            document.getElementById('l3-feedback').classList.remove('hidden');
+            awardToken('Professionalism');
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
-        recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            transcriptionText.textContent = transcript;
-            transcriptionBox.classList.remove('hidden');
-            analyzeSpeech(transcript);
-        };
+    // --- Level 4: Situational ---
+    window.submitLevel4 = async () => {
+        const answer = document.getElementById('l4-answer').value;
+        if (!answer.trim()) return alert(MESSAGES.error);
 
-        recognition.onend = () => {
-            recordBtn.classList.remove('recording');
-        };
+        try {
+            const response = await fetch('/api/judge_level4', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ answer: answer })
+            });
+            const data = await response.json();
+            STATE.totalScore += data.score;
 
-        recognition.onerror = (event) => {
-            console.error(event.error);
-            recordBtn.classList.remove('recording');
-            alert("Microphone access denied or error occurred.");
-        };
+            document.getElementById('l4-feedback').classList.remove('hidden');
+            awardToken('Agility');
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
-    } else {
-        recordBtn.disabled = true;
-        alert("Speech Recognition not supported in this browser.");
+    // --- Level 6: Final Results ---
+    function showFinalResults() {
+        const scoreDisplay = document.getElementById('final-score-display');
+        const verdictDisplay = document.getElementById('final-verdict-display');
+
+        // Normalize score (mock logic for now, assuming max around 300)
+        const finalScore = Math.min(100, Math.round((STATE.totalScore / 300) * 100) + 50); // Boost for demo
+
+        if (scoreDisplay) scoreDisplay.textContent = finalScore;
+        if (verdictDisplay) verdictDisplay.textContent = finalScore > 80 ? "HIRED" : "CONSIDERED";
+
+        renderGrowthGraph();
     }
 
-    function analyzeSpeech(text) {
-        let score = 0;
-        const words = text.split(' ');
-        const fillerWords = ['um', 'uh', 'like', 'you know'];
+    function renderGrowthGraph() {
+        const svg = document.getElementById('growth-graph');
+        if (!svg) return;
 
-        if (words.length > 20) score += 30;
-        else if (words.length > 10) score += 10;
+        // Create a smooth curve
+        const width = 500;
+        const height = 150;
+        const points = [
+            [0, height],
+            [100, height - 40],
+            [200, height - 60],
+            [300, height - 90],
+            [400, height - 120],
+            [500, 20]
+        ];
 
-        let fillerCount = 0;
-        fillerWords.forEach(word => {
-            if (text.toLowerCase().includes(word)) fillerCount++;
-        });
-
-        score -= (fillerCount * 5);
-        if (score < 0) score = 0;
-
-        totalScore += score;
-
-        document.getElementById('l3-score').textContent = score;
-
-        let verdict = "";
-        const verdictBadge = document.getElementById('final-verdict');
-
-        if (totalScore > 80) {
-            verdict = "HIRED";
-            verdictBadge.style.background = "#4ade80";
-            verdictBadge.style.color = "#064e3b";
-        } else if (totalScore > 50) {
-            verdict = "CONSIDERED";
-            verdictBadge.style.background = "#facc15";
-            verdictBadge.style.color = "#713f12";
-        } else {
-            verdict = "REJECTED";
-            verdictBadge.style.background = "#f87171";
-            verdictBadge.style.color = "#7f1d1d";
+        let pathD = `M ${points[0][0]} ${points[0][1]}`;
+        for (let i = 1; i < points.length; i++) {
+            const prev = points[i - 1];
+            const curr = points[i];
+            const cp1x = prev[0] + (curr[0] - prev[0]) / 2;
+            const cp1y = prev[1];
+            const cp2x = prev[0] + (curr[0] - prev[0]) / 2;
+            const cp2y = curr[1];
+            pathD += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${curr[0]} ${curr[1]}`;
         }
 
-        verdictBadge.textContent = verdict;
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", pathD);
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke", "var(--accent-color)");
+        path.setAttribute("stroke-width", "4");
+        path.setAttribute("stroke-linecap", "round");
 
-        recordBtn.classList.add('hidden');
-        l3Result.classList.remove('hidden');
+        // Animate
+        const length = 1000;
+        path.style.strokeDasharray = length;
+        path.style.strokeDashoffset = length;
+        path.style.transition = "stroke-dashoffset 2s ease-out";
+
+        svg.innerHTML = '';
+        svg.appendChild(path);
+
+        setTimeout(() => {
+            path.style.strokeDashoffset = 0;
+        }, 100);
     }
 
-    restartBtn.addEventListener('click', () => {
-        location.reload();
-    });
+    // --- Accessibility & Motion ---
+    if (motionToggle) {
+        motionToggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.body.classList.remove('reduced-motion');
+                STATE.motionEnabled = true;
+            } else {
+                document.body.classList.add('reduced-motion');
+                STATE.motionEnabled = false;
+            }
+        });
+    }
 
     // Parallax Effect
     document.addEventListener('mousemove', (e) => {
+        if (document.body.classList.contains('reduced-motion')) return;
+
+        const shapes = document.querySelectorAll('.ambient-shape');
         const x = (window.innerWidth - e.pageX * 2) / 100;
         const y = (window.innerHeight - e.pageY * 2) / 100;
 
-        document.querySelectorAll('.parallax-target').forEach(el => {
-            el.style.transform = `translateX(${x}px) translateY(${y}px)`;
+        shapes.forEach((shape, index) => {
+            const speed = (index + 1) * 0.02;
+            shape.style.transform = `translate(${x * speed * 50}px, ${y * speed * 50}px)`;
         });
     });
+
 });
