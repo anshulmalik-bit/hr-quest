@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Quest: The Interview Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Background Elements -->
+    <div class="sphere sphere-1"></div>
+    <div class="sphere sphere-2"></div>
+    <div class="sphere sphere-3"></div>
+
+    <!-- Landing Page -->
+    <div id="landing-page" class="container">
+        <div class="content-left">
+            <h1 id="main-title" class="parallax-target">HR QUEST</h1>
+            <p class="subtitle">Master the Art of Human Resources</p>
+            <p class="description">Navigate through resume screening, situational logic, and the final interview boss to prove your worth.</p>
+            <button id="start-btn" class="btn-primary">Start Your Journey</button>
+        </div>
+        <div class="content-right">
+            <div class="floating-icons">
+                <div class="icon icon-briefcase">💼</div>
+                <div class="icon icon-book">📘</div>
+                <div class="icon icon-search">🔍</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Container (Hidden initially) -->
+    <div id="game-container" class="container hidden">
+        
+        <!-- Level 1: The Gatekeeper -->
+        <div id="level-1" class="level-section">
+            <h2>Level 1: The Gatekeeper</h2>
+            <p>Upload a candidate's resume to analyze their potential.</p>
+            <div class="upload-area" id="drop-zone">
+                <p>Drag & Drop PDF here or Click to Upload</p>
+                <input type="file" id="resume-upload" accept=".pdf" hidden>
+            </div>
+            <div id="level-1-result" class="result-box hidden">
+                <h3>Analysis Complete</h3>
+                <p>Score: <span id="l1-score">0</span></p>
+                <p>Class: <span id="l1-class">Unknown</span></p>
+                <ul id="l1-feedback"></ul>
+                <button id="next-l2-btn" class="btn-primary">Proceed to Level 2</button>
+            </div>
+        </div>
+
+        <!-- Level 2: The Logic Labyrinth -->
+        <div id="level-2" class="level-section hidden">
+            <h2>Level 2: The Logic Labyrinth</h2>
+            <div class="scenario-box">
+                <p id="scenario-text">Loading scenario...</p>
+            </div>
+            <textarea id="logic-answer" placeholder="Type your response here... (Be professional and empathetic)"></textarea>
+            <button id="submit-logic-btn" class="btn-primary">Submit Response</button>
+            <div id="level-2-result" class="result-box hidden">
+                <h3>Logic Assessment</h3>
+                <p>Score: <span id="l2-score">0</span></p>
+                <ul id="l2-feedback"></ul>
+                <button id="next-l3-btn" class="btn-primary">Face The Final Boss</button>
+            </div>
+        </div>
+
+        <!-- Level 3: The Final Boss -->
+        <div id="level-3" class="level-section hidden">
+            <h2>Level 3: The Final Boss</h2>
+            <p class="boss-prompt">"Tell me about a time you resolved a conflict."</p>
+            <div class="voice-controls">
+                <button id="record-btn" class="btn-record">🎤 Start Recording</button>
+                <p id="recording-status">Ready to record...</p>
+            </div>
+            <div id="transcription-box" class="hidden">
+                <h4>Your Answer:</h4>
+                <p id="transcription-text"></p>
+            </div>
+            <div id="level-3-result" class="result-box hidden">
+                <h3>Interview Result</h3>
+                <p>Speech Score: <span id="l3-score">0</span></p>
+                <p id="final-verdict"></p>
+                <button id="restart-btn" class="btn-secondary">Play Again</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
