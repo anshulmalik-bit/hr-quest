@@ -3,14 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const landingPage = document.getElementById('landing-page');
     const gameContainer = document.getElementById('game-container');
     const startBtn = document.getElementById('start-btn');
-    
+
     // Level 1 Elements
     const level1 = document.getElementById('level-1');
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('resume-upload');
     const l1Result = document.getElementById('level-1-result');
     const nextL2Btn = document.getElementById('next-l2-btn');
-    
+
     // Level 2 Elements
     const level2 = document.getElementById('level-2');
     const scenarioText = document.getElementById('scenario-text');
@@ -18,11 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitLogicBtn = document.getElementById('submit-logic-btn');
     const l2Result = document.getElementById('level-2-result');
     const nextL3Btn = document.getElementById('next-l3-btn');
-    
+
     // Level 3 Elements
     const level3 = document.getElementById('level-3');
     const recordBtn = document.getElementById('record-btn');
-    const recordingStatus = document.getElementById('recording-status');
     const transcriptionBox = document.getElementById('transcription-box');
     const transcriptionText = document.getElementById('transcription-text');
     const l3Result = document.getElementById('level-3-result');
@@ -35,25 +34,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Navigation ---
     startBtn.addEventListener('click', () => {
+        landingPage.classList.remove('active');
         landingPage.classList.add('hidden');
+
         gameContainer.classList.remove('hidden');
+        gameContainer.classList.add('active');
     });
 
     // --- Level 1: Resume Scanner ---
     dropZone.addEventListener('click', () => fileInput.click());
-    
+
     dropZone.addEventListener('dragover', (e) => {
         e.preventDefault();
-        dropZone.style.background = 'rgba(255,255,255,0.5)';
+        dropZone.style.borderColor = 'var(--primary-dark)';
+        dropZone.style.transform = 'scale(1.02)';
     });
 
     dropZone.addEventListener('dragleave', () => {
-        dropZone.style.background = 'transparent';
+        dropZone.style.borderColor = '#cbd5e1';
+        dropZone.style.transform = 'scale(1)';
     });
 
     dropZone.addEventListener('drop', (e) => {
         e.preventDefault();
-        dropZone.style.background = 'transparent';
+        dropZone.style.borderColor = '#cbd5e1';
+        dropZone.style.transform = 'scale(1)';
         if (e.dataTransfer.files.length) {
             handleFileUpload(e.dataTransfer.files[0]);
         }
@@ -69,33 +74,52 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData();
         formData.append('resume', file);
 
+        // Show loading state
+        dropZone.innerHTML = '<div class="spinner"></div><h3>Analyzing Resume...</h3><p>Please wait, the AI is reading your file.</p>';
+
         fetch('/api/scan_resume', {
             method: 'POST',
             body: formData
         })
-        .then(res => res.json())
-        .then(data => {
-            if (data.error) {
-                alert(data.error);
-                return;
-            }
-            
-            document.getElementById('l1-score').textContent = data.score;
-            document.getElementById('l1-class').textContent = data.class;
-            
-            const feedbackList = document.getElementById('l1-feedback');
-            feedbackList.innerHTML = '';
-            data.feedback.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = item;
-                feedbackList.appendChild(li);
-            });
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    resetDropZone();
+                    return;
+                }
 
-            totalScore += data.score;
-            dropZone.classList.add('hidden');
-            l1Result.classList.remove('hidden');
-        })
-        .catch(err => console.error(err));
+                // Update Score Circle
+                const scoreDisplay = document.getElementById('l1-score-display');
+                scoreDisplay.textContent = data.score;
+
+                // Update Circle Stroke Dasharray for animation
+                const circle = document.querySelector('.circle');
+                const percentage = data.score; // Assuming score is 0-100
+                circle.style.strokeDasharray = `${percentage}, 100`;
+
+                document.getElementById('l1-class').textContent = data.class;
+
+                const feedbackList = document.getElementById('l1-feedback');
+                feedbackList.innerHTML = '';
+                data.feedback.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    feedbackList.appendChild(li);
+                });
+
+                totalScore += data.score;
+                dropZone.classList.add('hidden');
+                l1Result.classList.remove('hidden');
+            })
+            .catch(err => {
+                console.error(err);
+                resetDropZone();
+            });
+    }
+
+    function resetDropZone() {
+        dropZone.innerHTML = '<div class="upload-icon">📂</div><h3>Drop your PDF here</h3><p>or click to browse</p>';
     }
 
     nextL2Btn.addEventListener('click', () => {
@@ -107,11 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Level 2: Logic Labyrinth ---
     function loadLevel2Question() {
         fetch('/api/get_level2_question')
-        .then(res => res.json())
-        .then(data => {
-            scenarioText.textContent = data.scenario;
-            level2QuestionId = data.id;
-        });
+            .then(res => res.json())
+            .then(data => {
+                scenarioText.textContent = data.scenario;
+                level2QuestionId = data.id;
+            });
     }
 
     submitLogicBtn.addEventListener('click', () => {
@@ -126,23 +150,23 @@ document.addEventListener('DOMContentLoaded', () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: level2QuestionId, answer: answer })
         })
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('l2-score').textContent = data.score;
-            
-            const feedbackList = document.getElementById('l2-feedback');
-            feedbackList.innerHTML = '';
-            data.feedback.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = item;
-                feedbackList.appendChild(li);
-            });
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('l2-score').textContent = data.score;
 
-            totalScore += data.score;
-            submitLogicBtn.classList.add('hidden');
-            logicAnswer.disabled = true;
-            l2Result.classList.remove('hidden');
-        });
+                const feedbackList = document.getElementById('l2-feedback');
+                feedbackList.innerHTML = '';
+                data.feedback.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    feedbackList.appendChild(li);
+                });
+
+                totalScore += data.score;
+                submitLogicBtn.classList.add('hidden');
+                logicAnswer.disabled = true;
+                l2Result.classList.remove('hidden');
+            });
     });
 
     nextL3Btn.addEventListener('click', () => {
@@ -151,9 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Level 3: Final Boss (Voice) ---
-    // Check for browser support
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    
+
     if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
         recognition.continuous = false;
@@ -162,7 +185,6 @@ document.addEventListener('DOMContentLoaded', () => {
         recordBtn.addEventListener('click', () => {
             recognition.start();
             recordBtn.classList.add('recording');
-            recordingStatus.textContent = "Listening...";
         });
 
         recognition.onresult = (event) => {
@@ -174,49 +196,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
         recognition.onend = () => {
             recordBtn.classList.remove('recording');
-            recordingStatus.textContent = "Recording stopped.";
         };
-        
+
         recognition.onerror = (event) => {
             console.error(event.error);
-            recordingStatus.textContent = "Error: " + event.error;
             recordBtn.classList.remove('recording');
+            alert("Microphone access denied or error occurred.");
         };
 
     } else {
         recordBtn.disabled = true;
-        recordingStatus.textContent = "Speech Recognition not supported in this browser.";
+        alert("Speech Recognition not supported in this browser.");
     }
 
     function analyzeSpeech(text) {
         let score = 0;
         const words = text.split(' ');
         const fillerWords = ['um', 'uh', 'like', 'you know'];
-        
-        // Length Check
+
         if (words.length > 20) score += 30;
         else if (words.length > 10) score += 10;
-        
-        // Filler Check
+
         let fillerCount = 0;
         fillerWords.forEach(word => {
             if (text.toLowerCase().includes(word)) fillerCount++;
         });
-        
+
         score -= (fillerCount * 5);
         if (score < 0) score = 0;
 
         totalScore += score;
-        
+
         document.getElementById('l3-score').textContent = score;
-        
+
         let verdict = "";
-        if (totalScore > 80) verdict = "HIRED! You are a Master Recruiter.";
-        else if (totalScore > 50) verdict = "CONSIDERED. Good potential.";
-        else verdict = "REJECTED. Try again.";
-        
-        document.getElementById('final-verdict').textContent = verdict;
-        
+        const verdictBadge = document.getElementById('final-verdict');
+
+        if (totalScore > 80) {
+            verdict = "HIRED";
+            verdictBadge.style.background = "#4ade80";
+            verdictBadge.style.color = "#064e3b";
+        } else if (totalScore > 50) {
+            verdict = "CONSIDERED";
+            verdictBadge.style.background = "#facc15";
+            verdictBadge.style.color = "#713f12";
+        } else {
+            verdict = "REJECTED";
+            verdictBadge.style.background = "#f87171";
+            verdictBadge.style.color = "#7f1d1d";
+        }
+
+        verdictBadge.textContent = verdict;
+
         recordBtn.classList.add('hidden');
         l3Result.classList.remove('hidden');
     }
@@ -229,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mousemove', (e) => {
         const x = (window.innerWidth - e.pageX * 2) / 100;
         const y = (window.innerHeight - e.pageY * 2) / 100;
-        
+
         document.querySelectorAll('.parallax-target').forEach(el => {
             el.style.transform = `translateX(${x}px) translateY(${y}px)`;
         });
