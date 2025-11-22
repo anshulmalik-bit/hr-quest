@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import os
 import random
 import PyPDF2
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)  # Generate a random secret key for sessions
 
 # --- Data & Config ---
 LEVEL_2_QUESTIONS = [
@@ -27,6 +28,13 @@ LEVEL_2_QUESTIONS = [
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/api/set_role', methods=['POST'])
+def set_role():
+    data = request.json
+    session['role_category'] = data.get('category')
+    session['role_specialization'] = data.get('specialization')
+    return jsonify({"success": True})
 
 @app.route('/api/scan_resume', methods=['POST'])
 def scan_resume():
@@ -76,10 +84,15 @@ def scan_resume():
         elif "design" in text or "creative" in text:
             character_class = "Creative Bard"
 
+        # Store in session
+        session['resume_score'] = score
+        session['character_class'] = character_class
+        session['total_score'] = score
+        session['tokens'] = []
+        
         return jsonify({
-            "score": score,
-            "feedback": feedback,
-            "class": character_class
+            "success": True,
+            "redirect": url_for('level_1')
         })
 
     except Exception as e:
@@ -194,6 +207,127 @@ def judge_level5():
         feedback.append("Be specific about your goals (+20)")
 
     return jsonify({"score": score, "feedback": feedback})
+
+# --- Level Routes ---
+@app.route('/level/1')
+def level_1():
+    if 'resume_score' not in session:
+        return redirect(url_for('index'))
+    return render_template('level1.html')
+
+@app.route('/level/2')
+def level_2():
+    if 'resume_score' not in session:
+        return redirect(url_for('index'))
+    return render_template('level2.html')
+
+@app.route('/level/3')
+def level_3():
+    if 'resume_score' not in session:
+        return redirect(url_for('index'))
+    return render_template('level3.html')
+
+@app.route('/level/4')
+def level_4():
+    if 'resume_score' not in session:
+        return redirect(url_for('index'))
+    return render_template('level4.html')
+
+@app.route('/level/5')
+def level_5():
+    if 'resume_score' not in session:
+        return redirect(url_for('index'))
+    return render_template('level5.html')
+
+@app.route('/level/6')
+def level_6():
+    if 'resume_score' not in session:
+        return redirect(url_for('index'))
+    return render_template('level6.html', 
+                         total_score=session.get('total_score', 0),
+                         tokens=session.get('tokens', []))
+
+# --- Update Judge Endpoints to Use Session ---
+@app.route('/api/submit_level1', methods=['POST'])
+def submit_level1():
+    # Level 1 is just recording, auto-pass
+    if 'tokens' not in session:
+        session['tokens'] = []
+    session['tokens'].append('Confidence')
+    return jsonify({"success": True, "redirect": url_for('level_2')})
+
+@app.route('/api/submit_level2', methods=['POST'])
+def submit_level2():
+    data = request.json
+    answer = data.get('answer', '').lower()
+    question_id = data.get('id', 1)
+    
+    question = next((q for q in LEVEL_2_QUESTIONS if q["id"] == question_id), None)
+    if not question:
+        return jsonify({"error": "Question not found"}), 404
+
+    score = 0
+    if len(answer.split()) > 15:
+        score += 20
+    matched = [kw for kw in question['keywords'] if kw in answer]
+    score += len(matched) * 10
+    
+    session['total_score'] = session.get('total_score', 0) + score
+    session['tokens'].append('Clarity')
+    
+    return jsonify({"success": True, "redirect": url_for('level_3')})
+
+@app.route('/api/submit_level3', methods=['POST'])
+def submit_level3():
+    data = request.json
+    answer = data.get('answer', '').lower()
+    
+    score = 0
+    star_keywords = ['situation', 'task', 'action', 'result', 'handled', 'resolved', 'outcome']
+    matched = [kw for kw in star_keywords if kw in answer]
+    
+    if len(matched) >= 3:
+        score += 50
+    else:
+        score += 10
+
+    soft_skills = ['listened', 'understood', 'calm', 'perspective', 'compromise']
+    skill_match = [kw for kw in soft_skills if kw in answer]
+    if skill_match:
+        score += 30
+
+    session['total_score'] = session.get('total_score', 0) + score
+    session['tokens'].append('Professionalism')
+    
+    return jsonify({"success": True, "redirect": url_for('level_4')})
+
+@app.route('/api/submit_level4', methods=['POST'])
+def submit_level4():
+    data = request.json
+    answer = data.get('answer', '').lower()
+    
+    score = 0
+    strategy_keywords = ['prioritize', 'delegate', 'communicate', 'plan', 'timeline', 'negotiate']
+    matched = [kw for kw in strategy_keywords if kw in answer]
+    
+    if len(matched) >= 2:
+        score += 60
+    else:
+        score += 20
+
+    session['total_score'] = session.get('total_score', 0) + score
+    session['tokens'].append('Agility')
+    
+    return jsonify({"success": True, "redirect": url_for('level_5')})
+
+@app.route('/api/submit_level5', methods=['POST'])
+def submit_level5():
+    # Level 5 is recording, auto-pass with basic score
+    score = 50
+    session['total_score'] = session.get('total_score', 0) + score
+    session['tokens'].append('Maturity')
+    
+    return jsonify({"success": True, "redirect": url_for('level_6')})
 
 if __name__ == '__main__':
     app.run(debug=True)

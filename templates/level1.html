@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 1 - Introduction | HR Quest</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="full-motion theme-pastel-blue" data-theme="pastel-blue">
+    <div class="global-background">
+        <div class="ambient-shape shape-1"></div>
+        <div class="ambient-shape shape-2"></div>
+    </div>
+
+    <main class="level-page">
+        <section class="level-container">
+            <div class="content-wrapper">
+                <div class="level-header">
+                    <span class="level-badge">Level 01</span>
+                    <h3>Introduction</h3>
+                </div>
+                <p class="question-text">"Welcome. Let's start simple. Tell me about yourself."</p>
+                <div class="input-area">
+                    <button class="btn-record" id="record-btn" onclick="startRecording()">🎙️</button>
+                    <p class="hint-text">Click to speak your answer</p>
+                </div>
+                <div id="feedback" class="level-feedback hidden">
+                    <p>Good start! <span class="token-icon">🌟</span> Confidence Token Earned</p>
+                    <button class="btn-next" onclick="submitLevel()">Next Level</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function startRecording() {
+            const btn = document.getElementById('record-btn');
+            btn.style.transform = "scale(1.2)";
+            setTimeout(() => {
+                btn.style.transform = "scale(1)";
+                document.getElementById('feedback').classList.remove('hidden');
+            }, 2000);
+        }
+
+        function submitLevel() {
+            fetch('/api/submit_level1', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.redirect) {
+                        window.location.href = data.redirect;
+                    }
+                });
+        }
+    </script>
+</body>
+
+</html>

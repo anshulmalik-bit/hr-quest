@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 4 - Situational | HR Quest</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="full-motion theme-pastel-green" data-theme="pastel-green">
+    <div class="global-background">
+        <div class="ambient-shape shape-1"></div>
+        <div class="ambient-shape shape-2"></div>
+    </div>
+
+    <main class="level-page">
+        <section class="level-container">
+            <div class="content-wrapper">
+                <div class="level-header">
+                    <span class="level-badge">Level 04</span>
+                    <h3>Situational Challenge</h3>
+                </div>
+                <p class="question-text">"You have a tight deadline and a team member is sick. What do you do?"</p>
+                <textarea id="answer" placeholder="Your strategy..."></textarea>
+                <button class="btn-primary" onclick="submitLevel()">Submit Response</button>
+                <div id="feedback" class="level-feedback hidden">
+                    <p>Problem solved. <span class="token-icon">⚡</span> Agility Token Earned</p>
+                    <button class="btn-next" onclick="goToNext()">Next Level</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function submitLevel() {
+            const answer = document.getElementById('answer').value;
+            if (!answer.trim()) return alert("Please provide an answer.");
+
+            fetch('/api/submit_level4', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ answer: answer })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('feedback').classList.remove('hidden');
+                });
+        }
+
+        function goToNext() {
+            window.location.href = '/level/5';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Results | HR Quest</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="full-motion theme-pastel-peach" data-theme="pastel-peach">
+    <div class="global-background">
+        <div class="ambient-shape shape-1"></div>
+        <div class="ambient-shape shape-2"></div>
+    </div>
+
+    <main class="level-page">
+        <section class="level-container">
+            <div class="content-wrapper">
+                <h2 class="section-title">Evaluation Complete</h2>
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <h4>Final Score</h4>
+                        <div class="big-number" id="final-score">{{ total_score }}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Verdict</h4>
+                        <div class="verdict-tag" id="verdict">
+                            {% if total_score > 200 %}HIRED{% else %}CONSIDERED{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="growth-graph-container">
+                    <h3>Your Growth Trajectory</h3>
+                    <svg id="growth-graph" width="100%" height="150" viewBox="0 0 500 150"></svg>
+                </div>
+
+                <div class="token-grid">
+                    <h3>Tokens Earned</h3>
+                    <div class="tokens-display">
+                        {% for token in tokens %}
+                        <div class="token-chip">🏅 {{ token }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <button class="btn-secondary" onclick="location.href='/'">Start New Career Path</button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Render growth graph
+        const svg = document.getElementById('growth-graph');
+        const points = [[0, 140], [100, 100], [200, 80], [300, 40], [400, 20], [500, 10]];
+
+        let pathD = `M ${points[0][0]} ${points[0][1]}`;
+        for (let i = 1; i < points.length; i++) {
+            const prev = points[i - 1];
+            const curr = points[i];
+            const cp1x = prev[0] + (curr[0] - prev[0]) / 2;
+            const cp1y = prev[1];
+            const cp2x = prev[0] + (curr[0] - prev[0]) / 2;
+            const cp2y = curr[1];
+            pathD += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${curr[0]} ${curr[1]}`;
+        }
+
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", pathD);
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke", "var(--accent-color)");
+        path.setAttribute("stroke-width", "4");
+        path.setAttribute("stroke-linecap", "round");
+
+        const length = 1000;
+        path.style.strokeDasharray = length;
+        path.style.strokeDashoffset = length;
+        path.style.transition = "stroke-dashoffset 2s ease-out";
+
+        svg.appendChild(path);
+        setTimeout(() => { path.style.strokeDashoffset = 0; }, 100);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 3 - Behavioral | HR Quest</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="full-motion theme-pastel-lavender" data-theme="pastel-lavender">
+    <div class="global-background">
+        <div class="ambient-shape shape-1"></div>
+        <div class="ambient-shape shape-2"></div>
+    </div>
+
+    <main class="level-page">
+        <section class="level-container">
+            <div class="content-wrapper">
+                <div class="level-header">
+                    <span class="level-badge">Level 03</span>
+                    <h3>Behavioral (STAR)</h3>
+                </div>
+                <p class="question-text">"Describe a time you faced a conflict at work. How did you handle it?"</p>
+                <textarea id="answer" placeholder="Situation, Task, Action, Result..."></textarea>
+                <button class="btn-primary" onclick="submitLevel()">Submit Response</button>
+                <div id="feedback" class="level-feedback hidden">
+                    <p>Great empathy. <span class="token-icon">🤝</span> Professionalism Token Earned</p>
+                    <button class="btn-next" onclick="goToNext()">Next Level</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function submitLevel() {
+            const answer = document.getElementById('answer').value;
+            if (!answer.trim()) return alert("Please provide an answer.");
+
+            fetch('/api/submit_level3', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ answer: answer })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('feedback').classList.remove('hidden');
+                });
+        }
+
+        function goToNext() {
+            window.location.href = '/level/4';
+        }
+    </script>
+</body>
+
+</html>

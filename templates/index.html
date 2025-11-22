@@ -1,269 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<span class="level-badge">Level 01</span>
-<h3>Introduction</h3>
-</div>
-<p class="question-text">"Welcome. Let's start simple. Tell me about yourself."</p>
-<div class="input-area">
-    <button class="btn-record" onclick="startRecording(1)">🎙️</button>
-    <p class="hint-text">Click to speak your answer</p>
-</div>
-<div id="l1-feedback" class="level-feedback hidden">
-    <p>Good start! <span class="token-icon">🌟</span> Confidence Token Earned</p>
-    <button class="btn-next" onclick="nextLevel(2)">Next Level</button>
-</div>
-</div>
-</section>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Quest: Future Calm</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 
-<!-- LEVEL 2: Technical Fit (Pastel Red) -->
-<section class="snap-section level-section hidden" id="level-2" data-theme="pastel-red">
-    <div class="content-wrapper">
-        <div class="level-header">
-            <span class="level-badge">Level 02</span>
-            <h3>Technical Fit</h3>
-        </div>
-        <p class="question-text" id="l2-question">Loading technical scenario...</p>
-        <textarea id="l2-answer" placeholder="Type your technical approach..."></textarea>
-        <button class="btn-primary" onclick="submitLevel2()">Submit Response</button>
-        <div id="l2-feedback" class="level-feedback hidden">
-            <p>Solid logic. <span class="token-icon">🧠</span> Clarity Token Earned</p>
-            <button class="btn-next" onclick="nextLevel(3)">Next Level</button>
-        </div>
+<body class="full-motion">
+    <!-- Ambient Background -->
+    <div class="global-background">
+        <div class="ambient-shape shape-1"></div>
+        <div class="ambient-shape shape-2"></div>
+        <div class="ambient-shape shape-3"></div>
+        <div class="ambient-shape shape-4"></div>
     </div>
-</section>
 
-<!-- LEVEL 3: Behavioral (Pastel Lavender) -->
-<section class="snap-section level-section hidden" id="level-3" data-theme="pastel-lavender">
-    <div class="content-wrapper">
-        <div class="level-header">
-            <span class="level-badge">Level 03</span>
-            <h3>Behavioral (STAR)</h3>
-        </div>
-        <p class="question-text">"Describe a time you faced a conflict at work. How did you handle it?"</p>
-        <textarea id="l3-answer" placeholder="Situation, Task, Action, Result..."></textarea>
-        <button class="btn-primary" onclick="submitLevel3()">Submit Response</button>
-        <div id="l3-feedback" class="level-feedback hidden">
-            <p>Great empathy. <span class="token-icon">🤝</span> Professionalism Token Earned</p>
-            <button class="btn-next" onclick="nextLevel(4)">Next Level</button>
-        </div>
-    </div>
-</section>
+    <main id="main-scroll">
+        <!-- 1. Hero / Landing -->
+        <section class="snap-section active" id="hero" data-theme="pastel-blue">
+            <div class="content-wrapper">
+                <h1 class="hero-title">HR Quest</h1>
+                <p class="hero-subtitle">Future Calm Assessment</p>
+                <div class="how-it-works">
+                    <div class="step">
+                        <div class="step-icon">1</div>
+                        <span>Select Role</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step">
+                        <div class="step-icon">2</div>
+                        <span>Upload Resume</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step">
+                        <div class="step-icon">3</div>
+                        <span>Level Up</span>
+                    </div>
+                </div>
+                <p class="scroll-hint">Scroll to Begin</p>
+            </div>
+        </section>
 
-<!-- LEVEL 4: Situational (Pastel Green) -->
-<section class="snap-section level-section hidden" id="level-4" data-theme="pastel-green">
-    <div class="content-wrapper">
-        <div class="level-header">
-            <span class="level-badge">Level 04</span>
-            <h3>Situational Challenge</h3>
-        </div>
-        <p class="question-text">"You have a tight deadline and a team member is sick. What do you do?"</p>
-        <textarea id="l4-answer" placeholder="Your strategy..."></textarea>
-        <button class="btn-primary" onclick="submitLevel4()">Submit Response</button>
-        <div id="l4-feedback" class="level-feedback hidden">
-            <p>Problem solved. <span class="token-icon">⚡</span> Agility Token Earned</p>
-            <button class="btn-next" onclick="nextLevel(5)">Next Level</button>
-        </div>
-    </div>
-</section>
-
-<!-- LEVEL 5: HR Fit (Pastel Yellow) -->
-<section class="snap-section level-section hidden" id="level-5" data-theme="pastel-yellow">
-    <div class="content-wrapper">
-        <div class="level-header">
-            <span class="level-badge">Level 05</span>
-            <h3>HR & Salary</h3>
-        </div>
-        <p class="question-text">"What are your salary expectations and long-term goals?"</p>
-        <button class="btn-record" onclick="startRecording(5)">🎙️</button>
-        <div id="l5-feedback" class="level-feedback hidden">
-            <!DOCTYPE html>
-            <html lang="en">
-
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>HR Quest: Future Calm</title>
-                <link rel="preconnect" href="https://fonts.googleapis.com">
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-                <link
-                    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Inter:wght@300;400;500;600&display=swap"
-                    <h2 class="role-title">MBA Programs</h2>
+        <!-- 2. Role Category: MBA -->
+        <section class="snap-section role-section" id="role-mba" data-theme="pastel-yellow">
+            <div class="content-wrapper">
+                <div class="role-illustration">🎓</div>
+                <h2 class="role-title">MBA Programs</h2>
                 <p class="role-desc">Leadership, Strategy, and Management.</p>
                 <div class="role-chips">
                     <button class="chip" onclick="selectRole('MBA', 'HR')">HR</button>
                     <button class="chip" onclick="selectRole('MBA', 'Finance')">Finance</button>
                     <button class="chip" onclick="selectRole('MBA', 'Marketing')">Marketing</button>
                     <button class="chip" onclick="selectRole('MBA', 'Digital Marketing')">Digital Marketing</button>
-                    <button class="chip" onclick="selectRole('MBA', 'International Business')">Int.
-                        Business</button>
+                    <button class="chip" onclick="selectRole('MBA', 'International Business')">Int. Business</button>
                 </div>
-        </div>
-</section>
-
-<!-- 3. Role Category: B.Tech -->
-<section class="snap-section role-section" id="role-btech" data-theme="pastel-red">
-    <div class="content-wrapper">
-        <div class="role-illustration">⚙️</div>
-        <h2 class="role-title">Engineering (B.Tech)</h2>
-        <p class="role-desc">Innovation, Technology, and Problem Solving.</p>
-        <div class="role-chips">
-            <button class="chip" onclick="selectRole('B.Tech', 'CSE')">CSE</button>
-            <button class="chip" onclick="selectRole('B.Tech', 'Mechanical')">Mechanical</button>
-            <button class="chip" onclick="selectRole('B.Tech', 'Electrical')">Electrical</button>
-            <button class="chip" onclick="selectRole('B.Tech', 'Civil')">Civil</button>
-            <button class="chip" onclick="selectRole('B.Tech', 'IT')">IT</button>
-            <button class="chip" onclick="selectRole('B.Tech', 'Electronics')">Electronics</button>
-        </div>
-    </div>
-</section>
-
-<!-- 4. Role Category: Data -->
-<section class="snap-section role-section" id="role-data" data-theme="pastel-green">
-    <div class="content-wrapper">
-        <div class="role-illustration">📊</div>
-        <h2 class="role-title">Data & Analytics</h2>
-        <p class="role-desc">Insights, Intelligence, and Algorithms.</p>
-        <div class="role-chips">
-            <button class="chip" onclick="selectRole('Data', 'Data Analyst')">Data Analyst</button>
-            <button class="chip" onclick="selectRole('Data', 'Data Engineer')">Data Engineer</button>
-            <button class="chip" onclick="selectRole('Data', 'BI Analyst')">BI Analyst</button>
-        </div>
-    </div>
-</section>
-
-<!-- 5. Resume Upload -->
-</div>
-</section>
-
-<!-- LEVEL 1: Welcome (Pastel Blue) -->
-<section class="snap-section level-section hidden" id="level-1" data-theme="pastel-blue">
-    <div class="content-wrapper">
-        <div class="level-header">
-            <span class="level-badge">Level 01</span>
-            <h3>Introduction</h3>
-        </div>
-        <p class="question-text">"Welcome. Let's start simple. Tell me about yourself."</p>
-        <div class="input-area">
-            <button class="btn-record" onclick="startRecording(1)">🎙️</button>
-            <p class="hint-text">Click to speak your answer</p>
-        </div>
-        <div id="l1-feedback" class="level-feedback hidden">
-            <p>Good start! <span class="token-icon">🌟</span> Confidence Token Earned</p>
-            <button class="btn-next" onclick="nextLevel(2)">Next Level</button>
-        </div>
-    </div>
-</section>
-
-<!-- LEVEL 2: Technical Fit (Pastel Red) -->
-<section class="snap-section level-section hidden" id="level-2" data-theme="pastel-red">
-    <div class="content-wrapper">
-        <div class="level-header">
-            <span class="level-badge">Level 02</span>
-            <h3>Technical Fit</h3>
-        </div>
-        <p class="question-text" id="l2-question">Loading technical scenario...</p>
-        <textarea id="l2-answer" placeholder="Type your technical approach..."></textarea>
-        <button class="btn-primary" onclick="submitLevel2()">Submit Response</button>
-        <div id="l2-feedback" class="level-feedback hidden">
-            <p>Solid logic. <span class="token-icon">🧠</span> Clarity Token Earned</p>
-            <button class="btn-next" onclick="nextLevel(3)">Next Level</button>
-        </div>
-    </div>
-</section>
-
-<!-- LEVEL 3: Behavioral (Pastel Lavender) -->
-<section class="snap-section level-section hidden" id="level-3" data-theme="pastel-lavender">
-    <div class="content-wrapper">
-        <div class="level-header">
-            <span class="level-badge">Level 03</span>
-            <h3>Behavioral (STAR)</h3>
-        </div>
-        <p class="question-text">"Describe a time you faced a conflict at work. How did you handle it?"</p>
-        <textarea id="l3-answer" placeholder="Situation, Task, Action, Result..."></textarea>
-        <button class="btn-primary" onclick="submitLevel3()">Submit Response</button>
-        <div id="l3-feedback" class="level-feedback hidden">
-            <p>Great empathy. <span class="token-icon">🤝</span> Professionalism Token Earned</p>
-            <button class="btn-next" onclick="nextLevel(4)">Next Level</button>
-        </div>
-    </div>
-</section>
-
-<!-- LEVEL 4: Situational (Pastel Green) -->
-<section class="snap-section level-section hidden" id="level-4" data-theme="pastel-green">
-    <div class="content-wrapper">
-        <div class="level-header">
-            <span class="level-badge">Level 04</span>
-            <h3>Situational Challenge</h3>
-        </div>
-        <p class="question-text">"You have a tight deadline and a team member is sick. What do you do?"</p>
-        <textarea id="l4-answer" placeholder="Your strategy..."></textarea>
-        <button class="btn-primary" onclick="submitLevel4()">Submit Response</button>
-        <div id="l4-feedback" class="level-feedback hidden">
-            <p>Problem solved. <span class="token-icon">⚡</span> Agility Token Earned</p>
-            <button class="btn-next" onclick="nextLevel(5)">Next Level</button>
-        </div>
-    </div>
-</section>
-
-<!-- LEVEL 5: HR Fit (Pastel Yellow) -->
-<section class="snap-section level-section hidden" id="level-5" data-theme="pastel-yellow">
-    <div class="content-wrapper">
-        <div class="level-header">
-            <span class="level-badge">Level 05</span>
-            <h3>HR & Salary</h3>
-        </div>
-        <p class="question-text">"What are your salary expectations and long-term goals?"</p>
-        <button class="btn-record" onclick="startRecording(5)">🎙️</button>
-        <div id="l5-feedback" class="level-feedback hidden">
-            <p>Professional. <span class="token-icon">💼</span> Maturity Token Earned</p>
-            <button class="btn-next" onclick="nextLevel(6)">Final Evaluation</button>
-        </div>
-    </div>
-</section>
-
-<!-- LEVEL 6: Final Feedback (Pastel Peach) -->
-<section class="snap-section level-section hidden" id="level-6" data-theme="pastel-peach" aria-label="Final Feedback">
-    <div class="content-wrapper">
-        <h2 class="section-title">Evaluation Complete</h2>
-        <div class="dashboard-grid">
-            <div class="stat-card">
-                <h4>Final Score</h4>
-                <div class="big-number" id="final-score-display">0</div>
             </div>
-            <div class="stat-card">
-                <h4>Verdict</h4>
-                <div class="verdict-tag" id="final-verdict-display">-</div>
+        </section>
+
+        <!-- 3. Role Category: B.Tech -->
+        <section class="snap-section role-section" id="role-btech" data-theme="pastel-red">
+            <div class="content-wrapper">
+                <div class="role-illustration">⚙️</div>
+                <h2 class="role-title">Engineering (B.Tech)</h2>
+                <p class="role-desc">Innovation, Technology, and Problem Solving.</p>
+                <div class="role-chips">
+                    <button class="chip" onclick="selectRole('B.Tech', 'CSE')">CSE</button>
+                    <button class="chip" onclick="selectRole('B.Tech', 'Mechanical')">Mechanical</button>
+                    <button class="chip" onclick="selectRole('B.Tech', 'Electrical')">Electrical</button>
+                    <button class="chip" onclick="selectRole('B.Tech', 'Civil')">Civil</button>
+                    <button class="chip" onclick="selectRole('B.Tech', 'IT')">IT</button>
+                    <button class="chip" onclick="selectRole('B.Tech', 'Electronics')">Electronics</button>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Growth Graph -->
-        <div class="growth-graph-container">
-            <h3>Your Growth Trajectory</h3>
-            <svg id="growth-graph" width="100%" height="150" viewBox="0 0 500 150">
-                <!-- Path will be injected by JS -->
-            </svg>
-        </div>
+        <!-- 4. Role Category: Data -->
+        <section class="snap-section role-section" id="role-data" data-theme="pastel-green">
+            <div class="content-wrapper">
+                <div class="role-illustration">📊</div>
+                <h2 class="role-title">Data & Analytics</h2>
+                <p class="role-desc">Insights, Intelligence, and Algorithms.</p>
+                <div class="role-chips">
+                    <button class="chip" onclick="selectRole('Data', 'Data Analyst')">Data Analyst</button>
+                    <button class="chip" onclick="selectRole('Data', 'Data Engineer')">Data Engineer</button>
+                    <button class="chip" onclick="selectRole('Data', 'BI Analyst')">BI Analyst</button>
+                </div>
+            </div>
+        </section>
 
-        <div class="token-grid" id="final-tokens">
-            <!-- Tokens collected -->
-        </div>
-        <button class="btn-secondary" onclick="location.reload()">Start New Career Path</button>
+        <!-- 5. Resume Upload -->
+        <section class="snap-section upload-section" id="upload-section" data-theme="dynamic">
+            <div class="content-wrapper">
+                <div class="level-header">
+                    <span class="level-badge">Step 02</span>
+                    <h3>Upload Resume</h3>
+                </div>
+                <p class="question-text">"Excellent choice. <span id="selected-role-display">...</span>. Please share
+                    your resume so we can begin."</p>
+
+                <div class="upload-container">
+                    <input type="file" id="resume-upload" accept=".pdf" hidden onchange="uploadResume()">
+                    <label for="resume-upload" class="btn-primary upload-btn">
+                        <span class="icon">📄</span> Upload PDF
+                    </label>
+                    <p class="status-text" id="upload-status">Waiting for file...</p>
+                </div>
+
+                <div id="upload-feedback" class="level-feedback hidden">
+                    <p id="upload-message">Analysis Complete.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Motion Toggle -->
+    <div class="controls">
+        <label class="switch" aria-label="Toggle Motion">
+            <input type="checkbox" id="motion-toggle" checked>
+            <span class="slider round"></span>
+        </label>
+        <span class="control-label">Motion</span>
     </div>
-</section>
 
-</main>
-
-<!-- Motion Toggle -->
-<div class="controls">
-    <label class="switch" aria-label="Toggle Motion">
-        <input type="checkbox" id="motion-toggle" checked>
-        <span class="slider round"></span>
-    </label>
-    <span class="control-label">Motion</span>
-</div>
-
-<script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 
 </html>
