@@ -10,17 +10,17 @@
 </head>
 <body>
 
-    <!-- ==================== 
-         PART 1: LANDING PAGE 
-         (Visible Only at Start)
-         ==================== -->
+    <!-- LANDING PAGE -->
     <div id="landing-page">
-        
         <nav class="navbar">
             <div class="logo">HR Quest</div>
+            <div class="nav-links">
+                <a href="#" class="nav-btn">Exercises</a>
+                <a href="#" class="nav-btn">Resources</a>
+                <a href="#" class="nav-btn">FAQ</a>
+            </div>
         </nav>
 
-        <!-- Floating Elements -->
         <div class="sphere sphere-1"></div>
         <div class="sphere sphere-2"></div>
         <div class="sphere sphere-3"></div>
@@ -32,25 +32,15 @@
         <i class="fas fa-search floating-obj obj-3"></i>
         <i class="fas fa-comment-dots floating-obj obj-4"></i>
 
-        <!-- Main Hero Content -->
         <div class="hero-container">
             <div class="hero-content-wrapper">
-                <!-- Image -->
                 <div class="hero-image-container">
-                    <img src="/static/girl.png" 
-                         onerror="this.src='https://cdn3d.iconscout.com/3d/premium/thumb/female-student-holding-books-2974934-2477365.png'" 
-                         alt="Character" 
-                         class="hero-character">
+                    <img src="/static/girl.png" onerror="this.src='https://cdn3d.iconscout.com/3d/premium/thumb/female-student-holding-books-2974934-2477365.png'" alt="Character" class="hero-character">
                 </div>
-
-                <!-- Text & Button -->
                 <div class="hero-text-container">
                     <p class="sub-title">Practice with Simulations</p>
-                    <!-- The Parallax Effect will apply to this H1 -->
                     <h1 class="main-title">HR</h1>
-                    <p class="description">
-                        The ultimate platform to hone your HR interview skills with interactive simulations tailored to your experience level.
-                    </p>
+                    <p class="description">The ultimate platform to hone your HR interview skills with interactive simulations.</p>
                     <button class="get-started-btn" onclick="enterGame()">
                         Get Started <i class="fas fa-arrow-right" style="margin-left:5px;"></i>
                     </button>
@@ -59,37 +49,30 @@
         </div>
     </div>
 
-    <!-- ==================== 
-         PART 2: GAME INTERFACE 
-         (Hidden until "Get Started" is clicked)
-         ==================== -->
-    <div id="game-container" style="display: none;">
+    <!-- GAME INTERFACE -->
+    <div id="game-container">
         <div class="main-container">
-            <!-- This is the "Gatekeeper Code" - strictly inside the game container now -->
             <header>
                 <h1 class="glitch-text">HR QUEST_</h1>
                 <p id="level-title" class="subtitle">LEVEL 1: THE GATEKEEPER</p>
             </header>
 
-            <!-- LEVEL 1: RESUME UPLOAD -->
+            <!-- LEVEL 1: RESUME -->
             <div id="level1-section" class="game-interface">
                 <div class="upload-section">
                     <div class="briefing-card">
                         <h3>MISSION BRIEFING</h3>
-                        <p>To enter the corporate fortress, you must pass the ATS Scanners. Upload your Resume (PDF) to proceed.</p>
+                        <p>To enter the corporate fortress, you must pass the ATS Scanners. Upload your Resume (PDF).</p>
                     </div>
                     <div class="input-group">
-                        <input type="file" id="resumeInput" accept=".pdf" class="file-input">
+                        <input type="file" id="resumeInput" accept=".pdf" class="file-upload">
                         <button onclick="uploadResume()" class="start-btn">INITIATE SCAN</button>
                     </div>
                     <div id="game-status" class="loading-text"></div>
                 </div>
             </div>
 
-            <!-- RESULT AREA -->
-            <div id="result-area"></div>
-
-            <!-- LEVEL 2 -->
+            <!-- LEVEL 2: LOGIC -->
             <div id="level2-section" class="game-interface" style="display: none;">
                 <div class="upload-section">
                     <div class="briefing-card">
@@ -104,6 +87,32 @@
                     <div id="l2-status" class="loading-text"></div>
                 </div>
             </div>
+
+            <!-- LEVEL 3: AUDIO INTERVIEW (New!) -->
+            <div id="level3-section" class="game-interface" style="display: none;">
+                <div class="upload-section">
+                    <div class="briefing-card">
+                        <h3>THE FINAL BOSS</h3>
+                        <p><strong>Question:</strong> "Tell me about a time you handled a difficult conflict."</p>
+                        <p style="font-size: 0.9rem; color: #666;">(Speak clearly. We analyze confidence & filler words.)</p>
+                    </div>
+                    
+                    <div class="input-group" style="align-items: center;">
+                        <div id="mic-icon" style="font-size: 3rem; color: #ccc; margin: 20px;"><i class="fas fa-microphone"></i></div>
+                        <p id="recording-status">Click below to start recording</p>
+                        
+                        <button onclick="toggleRecording()" id="record-btn" class="start-btn" style="background: #e53e3e;">
+                            <i class="fas fa-microphone"></i> START RECORDING
+                        </button>
+                        
+                        <!-- Hidden Transcript -->
+                        <div id="transcript-box" style="display:none; width: 100%; background: #f0f0f0; padding: 10px; border-radius: 5px; margin-top: 10px; font-style: italic;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESULT AREA -->
+            <div id="result-area" class="game-box" style="display: none;"></div>
         </div>
     </div>
 
